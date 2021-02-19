@@ -37,7 +37,7 @@ public class DogController {
         return dogService.getDogsByUserId(userId);
     }
 
-    @PostMapping(value = "/save")
+    @PostMapping
     public DogDTO addDog(@RequestParam(value = "userId") long userId,
                          @RequestBody Dog dog) {
         return dogService.saveDog(dog, userId);

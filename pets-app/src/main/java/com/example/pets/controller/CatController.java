@@ -39,7 +39,7 @@ public class CatController {
         return catService.getCatsByUserId(catId);
     }
 
-    @PostMapping(value = "/save")
+    @PostMapping
     public CatDTO addCat(@RequestParam(value = "userId") long userId,
                          @RequestBody Cat cat) {
         return catService.saveCat(cat, userId);

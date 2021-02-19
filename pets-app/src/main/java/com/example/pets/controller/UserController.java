@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping(value = "/user")
+@RequestMapping(value = "/users")
 @AllArgsConstructor
 public class UserController {
 
@@ -28,12 +28,12 @@ public class UserController {
         return new ResponseEntity<>(userService.getUserById(userId), HttpStatus.OK);
     }
 
-    @GetMapping(value = "/all")
+    @GetMapping
     public List<User> findAllUsers() {
         return userService.getAllUsers();
     }
 
-    @PostMapping(value = "/save")
+    @PostMapping
     public User addUser(@RequestBody User user) {
         return userService.saveUser(user);
     }
