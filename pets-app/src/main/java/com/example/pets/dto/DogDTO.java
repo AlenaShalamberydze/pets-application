@@ -1,12 +1,14 @@
 package com.example.pets.dto;
 
 import com.example.pets.model.Size;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 
 @Data
 @Builder
+@AllArgsConstructor
 @RequiredArgsConstructor
 public class DogDTO {
 
