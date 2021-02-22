@@ -11,9 +11,9 @@ public interface CatService {
 
     List<CatDTO> getCatsByUserId(long userId);
 
-    CatDTO saveCat(Cat cat, long userId);
+    CatDTO saveCat(CatDTO cat);
 
-    CatDTO updateCat(Cat cat, long userId, long catId);
+    CatDTO updateCat(CatDTO catDTO);
 
     void deleteCat(long id);
 

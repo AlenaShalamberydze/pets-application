@@ -1,9 +1,14 @@
 package com.example.pets.controller;
 
+import com.example.pets.dto.AnimalDTO;
+import com.example.pets.dto.CatDTO;
+import com.example.pets.dto.DogDTO;
 import com.example.pets.model.User;
+import com.example.pets.service.AnimalService;
+import com.example.pets.service.CatService;
+import com.example.pets.service.DogService;
 import com.example.pets.service.UserService;
-import lombok.AllArgsConstructor;
-import org.springframework.http.HttpStatus;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,38 +23,70 @@ import java.util.List;
 
 @RestController
 @RequestMapping(value = "/users")
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class UserController {
 
     private final UserService userService;
+    private final DogService dogService;
+    private final CatService catService;
+    private final AnimalService animalService;
 
-    @GetMapping(value = "/{userId}")
-    public ResponseEntity<User> findUserById(@PathVariable long userId) {
-        return new ResponseEntity<>(userService.getUserById(userId), HttpStatus.OK);
+    @GetMapping(value = "/{id}")
+    public ResponseEntity<User> findUserById(@PathVariable long id) {
+        return ResponseEntity
+                .ok()
+                .body(userService.getUserById(id));
     }
 
     @GetMapping
-    public List<User> findAllUsers() {
-        return userService.getAllUsers();
+    public ResponseEntity<List<User>> findAllUsers() {
+        return ResponseEntity
+                .ok()
+                .body(userService.getAllUsers());
     }
 
     @PostMapping
-    public User addUser(@RequestBody User user) {
-        return userService.saveUser(user);
+    public ResponseEntity<User> addUser(@RequestBody User user) {
+        return ResponseEntity
+                .ok()
+                .body(userService.saveUser(user));
     }
 
-    @PutMapping(value = "/{userId}")
-    public ResponseEntity<User> updateUserData(@PathVariable long userId,
-                                               @RequestBody User user
-    ) {
-        userService.updateUser(user, userId);
-        return new ResponseEntity<>(user, HttpStatus.OK);
+    @PutMapping(value = "/{id}")
+    public ResponseEntity<User> updateUserData(@PathVariable long id,
+                                               @RequestBody User user) {
+        user.setId(id);
+        return ResponseEntity
+                .ok()
+                .body(userService.updateUser(user));
     }
 
-    @DeleteMapping(value = "/{userId}")
-    public ResponseEntity<String> deleteUser(@PathVariable long userId) {
-        userService.deleteUser(userId);
-        return new ResponseEntity<>(HttpStatus.OK);
+    @DeleteMapping(value = "/{id}")
+    public ResponseEntity.BodyBuilder deleteUser(@PathVariable long id) {
+        userService.deleteUser(id);
+        return ResponseEntity
+                .ok();
+    }
+
+    @GetMapping(value = "/{id}/cats")
+    public ResponseEntity<List<CatDTO>> findCatsByUserId(@PathVariable long id) {
+        return ResponseEntity
+                .ok()
+                .body(catService.getCatsByUserId(id));
+    }
+
+    @GetMapping(value = "/{id}/dogs")
+    public ResponseEntity<List<DogDTO>> findDogsByUserId(@PathVariable long id) {
+        return ResponseEntity
+                .ok()
+                .body(dogService.getDogsByUserId(id));
+    }
+
+    @GetMapping(value = "/{id}/animals")
+    public ResponseEntity<List<AnimalDTO>> getAnimalsByUserId(@PathVariable long id) {
+        return ResponseEntity
+                .ok()
+                .body(animalService.getAnimalsByUserId(id));
     }
 
 }

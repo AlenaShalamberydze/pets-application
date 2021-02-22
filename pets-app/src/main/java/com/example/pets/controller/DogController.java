@@ -1,10 +1,8 @@
 package com.example.pets.controller;
 
 import com.example.pets.dto.DogDTO;
-import com.example.pets.model.Dog;
 import com.example.pets.service.DogService;
-import lombok.AllArgsConstructor;
-import org.springframework.http.HttpStatus;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,49 +11,46 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.List;
 
 import static com.example.pets.dto.DTOMapper.toDogDto;
 
 @RestController
-@RequestMapping(value = "/dog")
-@AllArgsConstructor
+@RequestMapping(value = "/dogs")
+@RequiredArgsConstructor
 public class DogController {
 
     private final DogService dogService;
 
-    @GetMapping(value = "/{dogId}")
-    public ResponseEntity<DogDTO> findDogById(@PathVariable long dogId) {
-        return new ResponseEntity<>(toDogDto(dogService.getDogById(dogId)), HttpStatus.OK);
-    }
-
-    @GetMapping(value = "/all/{userId}")
-    public List<DogDTO> findDogsByUserId(@PathVariable long userId) {
-        return dogService.getDogsByUserId(userId);
+    @GetMapping(value = "/{id}")
+    public ResponseEntity<DogDTO> findDogById(@PathVariable long id) {
+        return ResponseEntity
+                .ok()
+                .body(toDogDto(dogService.getDogById(id)));
     }
 
     @PostMapping
-    public DogDTO addDog(@RequestParam(value = "userId") long userId,
-                         @RequestBody Dog dog) {
-        return dogService.saveDog(dog, userId);
+    public ResponseEntity<DogDTO> addDog(@RequestBody DogDTO dogDTO) {
+        return ResponseEntity
+                .ok()
+                .body(dogService.saveDog(dogDTO));
     }
 
-    @PutMapping(value = "/{dogId}")
-    public ResponseEntity<String> updateDog(@PathVariable long dogId,
-                                         @RequestParam(value = "userId") long userId,
-                                         @RequestBody Dog dog
-    ) {
-        dogService.updateDog(dog, userId, dogId);
-        return new ResponseEntity<>(HttpStatus.OK);
+    @PutMapping(value = "/{id}")
+    public ResponseEntity.BodyBuilder updateDogInfo(@PathVariable long id,
+                                                    @RequestBody DogDTO dogDTO) {
+        dogDTO.setId(id);
+        dogService.updateDog(dogDTO);
+        return ResponseEntity
+                .ok();
     }
 
-    @DeleteMapping(value = "/{dogId}")
-    public ResponseEntity<String> deleteDog(@PathVariable long dogId) {
-        dogService.deleteDog(dogId);
-        return new ResponseEntity<>(HttpStatus.OK);
+    @DeleteMapping(value = "/{id}")
+    public ResponseEntity.BodyBuilder deleteDog(@PathVariable long id) {
+        dogService.deleteDog(id);
+        return ResponseEntity
+                .ok();
     }
+
 
 }

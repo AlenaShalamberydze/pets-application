@@ -38,4 +38,20 @@ public final class DTOMapper {
                 .build();
     }
 
+    public static Cat fromCatDto(CatDTO catDTO) {
+        return Cat.builder()
+                .name(catDTO.getName())
+                .age(catDTO.getAge())
+                .character(catDTO.getCharacter())
+                .build();
+    }
+
+    public static Dog fromDogDto(DogDTO dogDTO) {
+        return Dog.builder()
+                .name(dogDTO.getName())
+                .age(dogDTO.getAge())
+                .size(dogDTO.getSize())
+                .build();
+    }
+
 }

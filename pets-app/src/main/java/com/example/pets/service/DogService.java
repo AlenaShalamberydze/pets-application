@@ -11,9 +11,9 @@ public interface DogService {
 
     List<DogDTO> getDogsByUserId(long userId);
 
-    DogDTO saveDog(Dog dog, long userId);
+    DogDTO saveDog(DogDTO dogDTO);
 
-    DogDTO updateDog(Dog dog, long userId, long dogId);
+    DogDTO updateDog(DogDTO dogDTO);
 
     void deleteDog(long dogId);
 

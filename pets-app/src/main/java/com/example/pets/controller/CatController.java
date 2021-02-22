@@ -1,10 +1,8 @@
 package com.example.pets.controller;
 
 import com.example.pets.dto.CatDTO;
-import com.example.pets.model.Cat;
 import com.example.pets.service.CatService;
-import lombok.AllArgsConstructor;
-import org.springframework.http.HttpStatus;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,50 +11,45 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.List;
 
 import static com.example.pets.dto.DTOMapper.toCatDto;
 
 @RestController
-@RequestMapping(value = "/cat")
-@AllArgsConstructor
+@RequestMapping(value = "/cats")
+@RequiredArgsConstructor
 public class CatController {
 
     private final CatService catService;
 
-    @GetMapping(value = "/{catId}")
-    public ResponseEntity<CatDTO> findCatById(@PathVariable long catId) {
-        return new ResponseEntity<>(
-                toCatDto(catService.getCatById(catId)),
-                HttpStatus.OK);
-    }
-
-    @GetMapping(value = "/all/{catId}")
-    public List<CatDTO> findCatsByUserId(@PathVariable long catId) {
-        return catService.getCatsByUserId(catId);
+    @GetMapping(value = "/{id}")
+    public ResponseEntity<CatDTO> findCatById(@PathVariable long id) {
+        return ResponseEntity
+                .ok()
+                .body(toCatDto(catService.getCatById(id)));
     }
 
     @PostMapping
-    public CatDTO addCat(@RequestParam(value = "userId") long userId,
-                         @RequestBody Cat cat) {
-        return catService.saveCat(cat, userId);
+    public ResponseEntity<CatDTO> addCat(@RequestBody CatDTO catDTO) {
+        return ResponseEntity
+                .ok()
+                .body(catService.saveCat(catDTO));
     }
 
-    @PutMapping(value = "/{catId}")
-    public ResponseEntity<String> updateCatInfo(@PathVariable long catId,
-                                         @RequestParam(value = "userId") long userId,
-                                         @RequestBody Cat cat
-    ) {
-        catService.updateCat(cat, userId, catId);
-        return new ResponseEntity<>(HttpStatus.OK);
+    @PutMapping(value = "/{id}")
+    public ResponseEntity.BodyBuilder updateCatInfo(@PathVariable long id,
+                                                    @RequestBody CatDTO catDTO) {
+        catDTO.setId(id);
+        catService.updateCat(catDTO);
+        return ResponseEntity
+                .ok();
     }
 
-    @DeleteMapping(value = "/{catId}")
-    public ResponseEntity<String> deleteCat(@PathVariable long catId) {
-        catService.deleteCat(catId);
-        return new ResponseEntity<>(HttpStatus.OK);
+    @DeleteMapping(value = "/{id}")
+    public ResponseEntity.BodyBuilder deleteCat(@PathVariable long id) {
+        catService.deleteCat(id);
+        return ResponseEntity
+                .ok();
     }
+
 }

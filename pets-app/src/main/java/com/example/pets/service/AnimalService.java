@@ -11,5 +11,6 @@ public interface AnimalService {
 
     List<AnimalDTO> getAnimalsByUserId(long userId);
 
+    void deleteAnimal(long id);
 
 }
