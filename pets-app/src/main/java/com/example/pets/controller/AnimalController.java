@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 import static com.example.pets.dto.DTOMapper.toDto;
 
 @RestController
@@ -20,17 +22,22 @@ public class AnimalController {
     private final AnimalService animalService;
 
     @GetMapping(value = "/{id}")
-    public ResponseEntity<AnimalDTO> findAnimalById(@PathVariable long id) {
+    public ResponseEntity<AnimalDTO> findById(@PathVariable long id) {
         return ResponseEntity
-                .ok()
-                .body(toDto(animalService.getAnimalById(id)));
+                .ok(toDto(animalService.getById(id)));
     }
 
     @DeleteMapping(value = "/{id}")
-    public ResponseEntity.BodyBuilder deleteAnimal(@PathVariable long id) {
-        animalService.deleteAnimal(id);
+    public ResponseEntity.BodyBuilder deleteById(@PathVariable long id) {
+        animalService.delete(id);
         return ResponseEntity
                 .ok();
+    }
+
+    @GetMapping
+    public ResponseEntity<List<AnimalDTO>> findAll() {
+        return ResponseEntity
+                .ok(animalService.getAll());
     }
 
 }

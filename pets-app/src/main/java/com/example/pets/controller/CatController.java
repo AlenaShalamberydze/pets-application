@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 import static com.example.pets.dto.DTOMapper.toCatDto;
 
 @RestController
@@ -23,31 +25,35 @@ public class CatController {
     private final CatService catService;
 
     @GetMapping(value = "/{id}")
-    public ResponseEntity<CatDTO> findCatById(@PathVariable long id) {
+    public ResponseEntity<CatDTO> findById(@PathVariable long id) {
         return ResponseEntity
-                .ok()
-                .body(toCatDto(catService.getCatById(id)));
+                .ok(toCatDto(catService.getById(id)));
+    }
+
+    @GetMapping
+    public ResponseEntity<List<CatDTO>> findAll() {
+        return ResponseEntity
+                .ok(catService.getAll());
     }
 
     @PostMapping
-    public ResponseEntity<CatDTO> addCat(@RequestBody CatDTO catDTO) {
+    public ResponseEntity<CatDTO> add(@RequestBody CatDTO catDTO) {
         return ResponseEntity
-                .ok()
-                .body(catService.saveCat(catDTO));
+                .ok(catService.save(catDTO));
     }
 
     @PutMapping(value = "/{id}")
-    public ResponseEntity.BodyBuilder updateCatInfo(@PathVariable long id,
-                                                    @RequestBody CatDTO catDTO) {
+    public ResponseEntity.BodyBuilder update(@PathVariable long id,
+                                             @RequestBody CatDTO catDTO) {
         catDTO.setId(id);
-        catService.updateCat(catDTO);
+        catService.update(catDTO);
         return ResponseEntity
                 .ok();
     }
 
     @DeleteMapping(value = "/{id}")
-    public ResponseEntity.BodyBuilder deleteCat(@PathVariable long id) {
-        catService.deleteCat(id);
+    public ResponseEntity.BodyBuilder deleteById(@PathVariable long id) {
+        catService.deleteById(id);
         return ResponseEntity
                 .ok();
     }

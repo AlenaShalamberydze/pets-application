@@ -1,19 +1,19 @@
 package com.example.pets.service;
 
-import com.example.pets.model.User;
+import com.example.pets.model.user.User;
 
 import java.util.List;
 
 public interface UserService {
 
-    User getUserById(long userId);
+    User getById(long id);
 
-    List<User> getAllUsers();
+    List<User> getAll();
 
-    User saveUser(User user);
+    User save(User user);
 
-    User updateUser(User user);
+    User update(User user);
 
-    void deleteUser(long userId);
+    void deleteById(long id);
 
 }

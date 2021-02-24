@@ -1,6 +1,6 @@
 package com.example.pets.repository;
 
-import com.example.pets.model.Cat;
+import com.example.pets.model.cat.Cat;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

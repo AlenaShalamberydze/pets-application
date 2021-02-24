@@ -1,20 +1,22 @@
 package com.example.pets.service;
 
 import com.example.pets.dto.CatDTO;
-import com.example.pets.model.Cat;
+import com.example.pets.model.cat.Cat;
 
 import java.util.List;
 
 public interface CatService {
 
-    Cat getCatById(long id);
+    Cat getById(long id);
 
-    List<CatDTO> getCatsByUserId(long userId);
+    List<CatDTO> getAll();
 
-    CatDTO saveCat(CatDTO cat);
+    List<CatDTO> getAllByUserId(long userId);
 
-    CatDTO updateCat(CatDTO catDTO);
+    CatDTO save(CatDTO cat);
 
-    void deleteCat(long id);
+    CatDTO update(CatDTO catDTO);
+
+    void deleteById(long id);
 
 }

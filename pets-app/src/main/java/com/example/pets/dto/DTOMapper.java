@@ -1,8 +1,8 @@
 package com.example.pets.dto;
 
-import com.example.pets.model.Animal;
-import com.example.pets.model.Cat;
-import com.example.pets.model.Dog;
+import com.example.pets.model.animal.Animal;
+import com.example.pets.model.cat.Cat;
+import com.example.pets.model.dog.Dog;
 import lombok.NoArgsConstructor;
 
 import static lombok.AccessLevel.PRIVATE;

@@ -1,16 +1,20 @@
 package com.example.pets.service;
 
 import com.example.pets.dto.AnimalDTO;
-import com.example.pets.model.Animal;
+import com.example.pets.model.animal.Animal;
 
 import java.util.List;
 
 public interface AnimalService {
 
-    Animal getAnimalById(long animalId);
+    Animal getById(long animalId);
 
-    List<AnimalDTO> getAnimalsByUserId(long userId);
+    List<Animal> getAllByUserId(long userId);
 
-    void deleteAnimal(long id);
+    List<AnimalDTO> getAll();
+
+    void delete(long id);
+
+    void save(Animal animal);
 
 }
