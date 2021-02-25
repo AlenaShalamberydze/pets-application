@@ -28,10 +28,11 @@ public class AnimalController {
     }
 
     @DeleteMapping(value = "/{id}")
-    public ResponseEntity.BodyBuilder deleteById(@PathVariable long id) {
+    public ResponseEntity<String> deleteById(@PathVariable long id) {
         animalService.delete(id);
         return ResponseEntity
-                .ok();
+                .ok()
+                .build();
     }
 
     @GetMapping

@@ -13,6 +13,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import static org.springframework.http.HttpMethod.DELETE;
 import static org.springframework.http.HttpMethod.GET;
 import static org.springframework.http.HttpMethod.PUT;
+import static org.springframework.security.config.http.SessionCreationPolicy.STATELESS;
 
 @Configuration
 @EnableWebSecurity
@@ -26,23 +27,22 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
         auth.inMemoryAuthentication()
-                .withUser("IAmTheFirstOneHere")
-                    .password(passwordEncoder().encode("weak-password"))
+                .withUser("User1")
+                    .password(passwordEncoder().encode("password1"))
                     .roles("USER")
                 .and()
-                .withUser("OneMoreUser")
-                    .password(passwordEncoder().encode("this-password-is-better"))
+                .withUser("User2")
+                    .password(passwordEncoder().encode("password2"))
                     .roles("USER")
                 .and()
                 .withUser("Admin")
-                    .password(passwordEncoder().encode("my-admin-password-is-fckn-perfect"))
+                    .password(passwordEncoder().encode("password-admin"))
                     .roles("ADMIN");
     }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
-                .csrf().disable()
                 .authorizeRequests()
                 .antMatchers(GET, "/users").hasRole("ADMIN")
                 .antMatchers(PUT, "/users/{id:[\\d+]}").hasRole("ADMIN")
@@ -50,13 +50,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/login").permitAll()
                 .anyRequest().authenticated()
                 .and()
-                .formLogin()
-                .loginPage("/login")
-                .failureUrl("/login?error=true")
+                .httpBasic()
                 .and()
                 .logout()
-                .logoutSuccessUrl("/login")
-                .permitAll();
+                .and()
+                .sessionManagement()
+                .sessionCreationPolicy(STATELESS)
+                .and()
+                .csrf().disable();
     }
 
 

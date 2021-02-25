@@ -3,6 +3,7 @@ package com.example.pets.dto;
 import com.example.pets.model.animal.Animal;
 import com.example.pets.model.cat.Cat;
 import com.example.pets.model.dog.Dog;
+import com.example.pets.model.user.User;
 import lombok.NoArgsConstructor;
 
 import static lombok.AccessLevel.PRIVATE;
@@ -24,7 +25,7 @@ public final class DTOMapper {
                 .name(cat.getName())
                 .age(cat.getAge())
                 .character(cat.getCharacter())
-                .userId(cat.getUser().getId())
+                .userId(getUserIdIfExists(cat.getUser()))
                 .build();
     }
 
@@ -34,12 +35,13 @@ public final class DTOMapper {
                 .name(dog.getName())
                 .age(dog.getAge())
                 .size(dog.getSize())
-                .userId(dog.getUser().getId())
+                .userId(getUserIdIfExists(dog.getUser()))
                 .build();
     }
 
     public static Cat fromCatDto(CatDTO catDTO) {
         return Cat.builder()
+                .id(catDTO.getId())
                 .name(catDTO.getName())
                 .age(catDTO.getAge())
                 .character(catDTO.getCharacter())
@@ -48,10 +50,18 @@ public final class DTOMapper {
 
     public static Dog fromDogDto(DogDTO dogDTO) {
         return Dog.builder()
+                .id(dogDTO.getId())
                 .name(dogDTO.getName())
                 .age(dogDTO.getAge())
                 .size(dogDTO.getSize())
                 .build();
+    }
+
+    private static Long getUserIdIfExists(User user) {
+        if (null != user) {
+            return user.getId();
+        }
+        return null;
     }
 
 }

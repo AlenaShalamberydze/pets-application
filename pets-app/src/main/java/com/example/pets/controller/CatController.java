@@ -43,19 +43,21 @@ public class CatController {
     }
 
     @PutMapping(value = "/{id}")
-    public ResponseEntity.BodyBuilder update(@PathVariable long id,
-                                             @RequestBody CatDTO catDTO) {
+    public ResponseEntity<String> update(@PathVariable long id,
+                                         @RequestBody CatDTO catDTO) {
         catDTO.setId(id);
         catService.update(catDTO);
         return ResponseEntity
-                .ok();
+                .ok()
+                .build();
     }
 
     @DeleteMapping(value = "/{id}")
-    public ResponseEntity.BodyBuilder deleteById(@PathVariable long id) {
+    public ResponseEntity<String> deleteById(@PathVariable long id) {
         catService.deleteById(id);
         return ResponseEntity
-                .ok();
+                .ok()
+                .build();
     }
 
 }

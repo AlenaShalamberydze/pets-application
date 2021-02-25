@@ -43,7 +43,7 @@ public class UserServiceImpl implements UserService {
     public User save(User user) {
         log.info("Saving user into DB");
         Optional<User> optionalUser = userRepository.findByUsername(user.getUsername());
-        if (!optionalUser.isPresent()) {
+        if (optionalUser.isPresent()) {
             log.error("Troubles! User already exists");
             throw new UserAlreadyExistsException("User already exists!");
         }

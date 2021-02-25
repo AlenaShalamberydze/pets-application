@@ -61,10 +61,11 @@ public class UserController {
     }
 
     @DeleteMapping(value = "/{id}")
-    public ResponseEntity.BodyBuilder deleteById(@PathVariable long id) {
+    public ResponseEntity<String> deleteById(@PathVariable long id) {
         userService.deleteById(id);
         return ResponseEntity
-                .ok();
+                .ok()
+                .build();
     }
 
     @GetMapping(value = "/{id}/cats")

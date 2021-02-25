@@ -43,19 +43,21 @@ public class DogController {
     }
 
     @PutMapping(value = "/{id}")
-    public ResponseEntity.BodyBuilder update(@PathVariable long id,
+    public ResponseEntity<String> update(@PathVariable long id,
                                              @RequestBody DogDTO dogDTO) {
         dogDTO.setId(id);
         dogService.update(dogDTO);
         return ResponseEntity
-                .ok();
+                .ok()
+                .build();
     }
 
     @DeleteMapping(value = "/{id}")
-    public ResponseEntity.BodyBuilder deleteById(@PathVariable long id) {
+    public ResponseEntity<String> deleteById(@PathVariable long id) {
         dogService.deleteById(id);
         return ResponseEntity
-                .ok();
+                .ok()
+                .build();
     }
 
 

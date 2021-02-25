@@ -4,17 +4,15 @@ import com.example.pets.model.dog.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
-import lombok.RequiredArgsConstructor;
 
 @Data
 @Builder
 @AllArgsConstructor
-@RequiredArgsConstructor
 public class DogDTO {
 
     private long id;
-    private final String name;
-    private final int age;
-    private final Size size;
-    private final long userId;
+    private String name;
+    private int age;
+    private Size size;
+    private long userId;
 }
