@@ -6,6 +6,7 @@ import com.example.pets.model.dog.Dog;
 import com.example.pets.model.user.User;
 import lombok.NoArgsConstructor;
 
+import static org.apache.commons.lang3.ObjectUtils.allNull;
 import static lombok.AccessLevel.PRIVATE;
 
 @NoArgsConstructor(access = PRIVATE)
@@ -58,10 +59,7 @@ public final class DTOMapper {
     }
 
     private static Long getUserIdIfExists(User user) {
-        if (null != user) {
-            return user.getId();
-        }
-        return null;
+        return allNull(user) ? null : user.getId();
     }
 
 }
