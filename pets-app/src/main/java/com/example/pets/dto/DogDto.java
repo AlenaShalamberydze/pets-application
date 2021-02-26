@@ -8,7 +8,7 @@ import lombok.Data;
 @Data
 @Builder
 @AllArgsConstructor
-public class DogDTO {
+public class DogDto {
 
     private long id;
     private String name;

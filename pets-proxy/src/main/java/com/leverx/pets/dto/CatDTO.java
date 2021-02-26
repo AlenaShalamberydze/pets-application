@@ -3,7 +3,7 @@ package com.leverx.pets.dto;
 import lombok.Data;
 
 @Data
-public class CatDTO {
+public class CatDto {
 
     private long id;
     private String name;

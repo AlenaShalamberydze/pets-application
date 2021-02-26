@@ -1,6 +1,6 @@
 package com.example.pets.controller;
 
-import com.example.pets.dto.CatDTO;
+import com.example.pets.dto.CatDto;
 import com.example.pets.service.CatService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
-import static com.example.pets.dto.DTOMapper.toCatDto;
+import static com.example.pets.dto.DtoMapper.toCatDto;
 
 @RestController
 @RequestMapping(value = "/cats")
@@ -25,26 +25,26 @@ public class CatController {
     private final CatService catService;
 
     @GetMapping(value = "/{id}")
-    public ResponseEntity<CatDTO> findById(@PathVariable long id) {
+    public ResponseEntity<CatDto> findById(@PathVariable long id) {
         return ResponseEntity
                 .ok(toCatDto(catService.getById(id)));
     }
 
     @GetMapping
-    public ResponseEntity<List<CatDTO>> findAll() {
+    public ResponseEntity<List<CatDto>> findAll() {
         return ResponseEntity
                 .ok(catService.getAll());
     }
 
     @PostMapping
-    public ResponseEntity<CatDTO> add(@RequestBody CatDTO catDTO) {
+    public ResponseEntity<CatDto> add(@RequestBody CatDto catDTO) {
         return ResponseEntity
                 .ok(catService.save(catDTO));
     }
 
     @PutMapping(value = "/{id}")
     public ResponseEntity<String> update(@PathVariable long id,
-                                         @RequestBody CatDTO catDTO) {
+                                         @RequestBody CatDto catDTO) {
         catDTO.setId(id);
         catService.update(catDTO);
         return ResponseEntity

@@ -10,18 +10,18 @@ import static org.apache.commons.lang3.ObjectUtils.allNull;
 import static lombok.AccessLevel.PRIVATE;
 
 @NoArgsConstructor(access = PRIVATE)
-public final class DTOMapper {
+public final class DtoMapper {
 
-    public static AnimalDTO toDto(Animal animal) {
-        return AnimalDTO.builder()
+    public static AnimalDto toDto(Animal animal) {
+        return AnimalDto.builder()
                 .id(animal.getId())
                 .name(animal.getName())
                 .age(animal.getAge())
                 .build();
     }
 
-    public static CatDTO toCatDto(Cat cat) {
-        return CatDTO.builder()
+    public static CatDto toCatDto(Cat cat) {
+        return CatDto.builder()
                 .id(cat.getId())
                 .name(cat.getName())
                 .age(cat.getAge())
@@ -30,8 +30,8 @@ public final class DTOMapper {
                 .build();
     }
 
-    public static DogDTO toDogDto(Dog dog) {
-        return DogDTO.builder()
+    public static DogDto toDogDto(Dog dog) {
+        return DogDto.builder()
                 .id(dog.getId())
                 .name(dog.getName())
                 .age(dog.getAge())
@@ -40,7 +40,7 @@ public final class DTOMapper {
                 .build();
     }
 
-    public static Cat fromCatDto(CatDTO catDTO) {
+    public static Cat fromCatDto(CatDto catDTO) {
         return Cat.builder()
                 .id(catDTO.getId())
                 .name(catDTO.getName())
@@ -49,7 +49,7 @@ public final class DTOMapper {
                 .build();
     }
 
-    public static Dog fromDogDto(DogDTO dogDTO) {
+    public static Dog fromDogDto(DogDto dogDTO) {
         return Dog.builder()
                 .id(dogDTO.getId())
                 .name(dogDTO.getName())

@@ -4,7 +4,7 @@ import com.leverx.pets.model.dog.Size;
 import lombok.Data;
 
 @Data
-public class DogDTO {
+public class DogDto {
 
     private long id;
     private String name;

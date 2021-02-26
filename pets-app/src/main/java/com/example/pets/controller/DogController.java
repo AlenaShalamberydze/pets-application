@@ -1,6 +1,6 @@
 package com.example.pets.controller;
 
-import com.example.pets.dto.DogDTO;
+import com.example.pets.dto.DogDto;
 import com.example.pets.service.DogService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
-import static com.example.pets.dto.DTOMapper.toDogDto;
+import static com.example.pets.dto.DtoMapper.toDogDto;
 
 @RestController
 @RequestMapping(value = "/dogs")
@@ -25,26 +25,26 @@ public class DogController {
     private final DogService dogService;
 
     @GetMapping(value = "/{id}")
-    public ResponseEntity<DogDTO> findById(@PathVariable long id) {
+    public ResponseEntity<DogDto> findById(@PathVariable long id) {
         return ResponseEntity
                 .ok(toDogDto(dogService.getById(id)));
     }
 
     @PostMapping
-    public ResponseEntity<DogDTO> add(@RequestBody DogDTO dogDTO) {
+    public ResponseEntity<DogDto> add(@RequestBody DogDto dogDTO) {
         return ResponseEntity
                 .ok(dogService.save(dogDTO));
     }
 
     @GetMapping
-    public ResponseEntity<List<DogDTO>> findAll() {
+    public ResponseEntity<List<DogDto>> findAll() {
         return ResponseEntity
                 .ok(dogService.getAll());
     }
 
     @PutMapping(value = "/{id}")
     public ResponseEntity<String> update(@PathVariable long id,
-                                             @RequestBody DogDTO dogDTO) {
+                                             @RequestBody DogDto dogDTO) {
         dogDTO.setId(id);
         dogService.update(dogDTO);
         return ResponseEntity
@@ -59,6 +59,5 @@ public class DogController {
                 .ok()
                 .build();
     }
-
 
 }
