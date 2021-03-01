@@ -1,0 +1,82 @@
+{
+	"info": {
+		"_postman_id": "20cb52ab-bc52-4d89-bc3f-78578cd3929d",
+		"name": "proxy-pets",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "proxy-get-users-cats-dogs",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "password-admin",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "Admin",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{proxyhost}}/proxy",
+					"host": [
+						"{{proxyhost}}"
+					],
+					"path": [
+						"proxy"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "cloud-save-cat-dog-user",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "password-admin",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "Admin",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"cat\": \r\n{\r\n    \"id\":1,\r\n    \"name\":\"barsik\",\r\n    \"age\":2,\r\n    \"character\":\"mild\",\r\n    \"userId\":1\r\n},\r\n    \"dog\": \r\n        {\r\n            \"id\":2,\r\n            \"name\":\"sparky\",\r\n            \"age\":2,\r\n            \"size\":\"SMALL\",\r\n            \"userId\":1\r\n        },\r\n    \"user\": \r\n        {\r\n            \"id\":1,\r\n            \"username\":\"user\",\r\n            \"password\":\"password\",\r\n            \"role\":\"USER\"\r\n        }\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{proxyhost}}/proxy",
+					"host": [
+						"{{proxyhost}}"
+					],
+					"path": [
+						"proxy"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
