@@ -33,7 +33,6 @@ public class AnimalServiceImpl implements AnimalService {
     }
 
     @Override
-    @Transactional
     public List<Animal> getAllByUserId(long userId) {
         log.info("Getting animals from DB by userId: {}", userId);
         return animalRepository.getAllByUserId(userId);

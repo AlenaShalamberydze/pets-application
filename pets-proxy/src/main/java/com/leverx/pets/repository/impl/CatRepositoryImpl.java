@@ -11,11 +11,14 @@ import org.springframework.stereotype.Repository;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
+import java.util.Optional;
 
+import static com.leverx.pets.repository.util.PetRepositoryUtil.getHttpEntityWithoutBody;
 import static com.leverx.pets.repository.util.PetRepositoryUtil.getHttpEntity;
 import static java.util.Arrays.asList;
 import static java.util.Optional.ofNullable;
 import static org.springframework.http.HttpMethod.GET;
+import static org.springframework.http.HttpMethod.POST;
 
 @Repository
 @RequiredArgsConstructor
@@ -30,9 +33,10 @@ public class CatRepositoryImpl implements CatRepository {
     @Override
     public List<CatDto> getCats() {
         RestTemplate restTemplate = new RestTemplate();
-        HttpEntity<String> httpEntity = getHttpEntity(authProvider);
+        HttpEntity<String> httpEntity = getHttpEntityWithoutBody(authProvider);
 
-        ResponseEntity<CatDto[]> cats = restTemplate.exchange(backendUrl + CATS,
+        ResponseEntity<CatDto[]> cats = restTemplate.exchange(
+                backendUrl + CATS,
                 GET,
                 httpEntity,
                 CatDto[].class);
@@ -40,6 +44,20 @@ public class CatRepositoryImpl implements CatRepository {
         return asList(
                 ofNullable(cats.getBody())
                         .orElseGet(cats::getBody));
+    }
+
+    @Override
+    public Optional<CatDto> saveCat(CatDto cat) {
+        RestTemplate restTemplate = new RestTemplate();
+        HttpEntity<CatDto> httpEntity = getHttpEntity(cat, authProvider);
+
+        ResponseEntity<CatDto> catDto = restTemplate.exchange(
+                backendUrl + CATS,
+                POST,
+                httpEntity,
+                CatDto.class);
+
+        return ofNullable(catDto.getBody());
     }
 
 }

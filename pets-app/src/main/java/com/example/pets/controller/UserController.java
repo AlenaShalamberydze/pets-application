@@ -2,8 +2,8 @@ package com.example.pets.controller;
 
 import com.example.pets.dto.AnimalDto;
 import com.example.pets.dto.CatDto;
-import com.example.pets.dto.DtoMapper;
 import com.example.pets.dto.DogDto;
+import com.example.pets.dto.DtoMapper;
 import com.example.pets.model.user.User;
 import com.example.pets.service.AnimalService;
 import com.example.pets.service.CatService;

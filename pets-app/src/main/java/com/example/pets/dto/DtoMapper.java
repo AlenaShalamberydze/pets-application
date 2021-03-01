@@ -6,7 +6,7 @@ import com.example.pets.model.dog.Dog;
 import com.example.pets.model.user.User;
 import lombok.NoArgsConstructor;
 
-import static org.apache.commons.lang3.ObjectUtils.allNull;
+import static org.apache.commons.lang3.ObjectUtils.anyNull;
 import static lombok.AccessLevel.PRIVATE;
 
 @NoArgsConstructor(access = PRIVATE)
@@ -17,6 +17,7 @@ public final class DtoMapper {
                 .id(animal.getId())
                 .name(animal.getName())
                 .age(animal.getAge())
+                .userId(animal.getUser().getId())
                 .build();
     }
 
@@ -59,7 +60,7 @@ public final class DtoMapper {
     }
 
     private static Long getUserIdIfExists(User user) {
-        return allNull(user) ? null : user.getId();
+        return anyNull(user) ? 0 : user.getId();
     }
 
 }

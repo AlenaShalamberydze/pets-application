@@ -10,10 +10,16 @@ import static lombok.AccessLevel.PRIVATE;
 @NoArgsConstructor(access = PRIVATE)
 public final class PetRepositoryUtil {
 
-    public static HttpEntity<String> getHttpEntity(AuthProvider authProvider){
+    public static HttpEntity<String> getHttpEntityWithoutBody(AuthProvider authProvider){
         HttpHeaders headers = new HttpHeaders();
         headers.add("Authorization", authProvider.getAuthHeader());
         return new HttpEntity<>(headers);
+    }
+
+    public static <T> HttpEntity<T> getHttpEntity(T entity, AuthProvider authProvider){
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Authorization", authProvider.getAuthHeader());
+        return new HttpEntity<>(entity, headers);
     }
 
 }

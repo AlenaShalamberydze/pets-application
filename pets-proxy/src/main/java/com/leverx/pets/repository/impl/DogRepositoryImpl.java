@@ -11,11 +11,14 @@ import org.springframework.stereotype.Repository;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
+import java.util.Optional;
 
 import static com.leverx.pets.repository.util.PetRepositoryUtil.getHttpEntity;
+import static com.leverx.pets.repository.util.PetRepositoryUtil.getHttpEntityWithoutBody;
 import static java.util.Arrays.asList;
 import static java.util.Optional.ofNullable;
 import static org.springframework.http.HttpMethod.GET;
+import static org.springframework.http.HttpMethod.POST;
 
 @Repository
 @RequiredArgsConstructor
@@ -30,9 +33,10 @@ public class DogRepositoryImpl implements DogRepository {
     @Override
     public List<DogDto> getDogs() {
         RestTemplate restTemplate = new RestTemplate();
-        HttpEntity<String> httpEntity = getHttpEntity(authProvider);
+        HttpEntity<String> httpEntity = getHttpEntityWithoutBody(authProvider);
 
-        ResponseEntity<DogDto[]> dogs = restTemplate.exchange(backendUrl + DOGS,
+        ResponseEntity<DogDto[]> dogs = restTemplate.exchange(
+                backendUrl + DOGS,
                 GET,
                 httpEntity,
                 DogDto[].class);
@@ -40,6 +44,20 @@ public class DogRepositoryImpl implements DogRepository {
         return asList(
                 ofNullable(dogs.getBody())
                         .orElseGet(dogs::getBody));
+    }
+
+    @Override
+    public Optional<DogDto> saveDog(DogDto dog) {
+        RestTemplate restTemplate = new RestTemplate();
+        HttpEntity<DogDto> httpEntity = getHttpEntity(dog, authProvider);
+
+        ResponseEntity<DogDto> dogDto = restTemplate.exchange(
+                backendUrl + DOGS,
+                POST,
+                httpEntity,
+                DogDto.class);
+
+        return ofNullable(dogDto.getBody());
     }
 
 }

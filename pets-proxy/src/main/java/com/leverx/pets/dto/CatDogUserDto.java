@@ -4,14 +4,12 @@ import com.leverx.pets.model.user.User;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
-import java.util.List;
-
 @Data
 @AllArgsConstructor
-public class ResponseDto {
+public class CatDogUserDto {
 
-    private List<CatDto> cats;
-    private List<DogDto> dogs;
-    private List<User> users;
+    private CatDto cat;
+    private DogDto dog;
+    private User user;
 
 }
