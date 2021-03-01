@@ -1,4 +1,4 @@
-package com.leverx.pets.dto;
+package com.leverx.pets.model.dto;
 
 import com.leverx.pets.model.user.User;
 import lombok.AllArgsConstructor;

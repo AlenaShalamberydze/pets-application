@@ -1,28 +1,26 @@
 package com.leverx.pets.controller;
 
-import com.leverx.pets.exception.NotFoundException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.client.HttpClientErrorException;
-
-import static org.springframework.http.HttpStatus.NOT_FOUND;
+import org.springframework.web.client.HttpServerErrorException;
 
 @ControllerAdvice
-public class PetsExceptionHandler {
+public class UserPetExceptionHandler {
 
     @ExceptionHandler(HttpClientErrorException.class)
-    ResponseEntity<String> clientExceptionHandler(HttpClientErrorException e){
+    ResponseEntity<String> clientExceptionHandler(HttpClientErrorException e) {
         return ResponseEntity
                 .status(e.getStatusCode())
                 .build();
     }
 
-    @ExceptionHandler(NotFoundException.class)
-    ResponseEntity<String> notFoundExceptionHandler(NotFoundException e) {
+    @ExceptionHandler(HttpServerErrorException.class)
+    ResponseEntity<String> serverExceptionHandler(HttpServerErrorException e){
         return ResponseEntity
-                .status(NOT_FOUND)
-                .body(e.getMessage());
+                .status(e.getStatusCode())
+                .build();
     }
 
 }

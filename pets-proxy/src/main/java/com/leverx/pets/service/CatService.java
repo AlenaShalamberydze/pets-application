@@ -1,15 +1,13 @@
-package com.leverx.pets.repository;
+package com.leverx.pets.service;
 
 import com.leverx.pets.model.dto.CatDto;
 
-import java.util.List;
 import java.util.Optional;
 
-public interface CatRepository {
-
-    List<CatDto> getAll();
+public interface CatService {
 
     Optional<CatDto> save(CatDto cat);
 
     void deleteById(long id);
+
 }

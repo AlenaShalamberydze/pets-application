@@ -15,4 +15,6 @@ public class CatDto {
     private String character;
     private long userId;
 
+
+
 }

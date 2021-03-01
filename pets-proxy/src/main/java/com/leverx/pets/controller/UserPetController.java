@@ -1,10 +1,10 @@
 package com.leverx.pets.controller;
 
-import com.leverx.pets.dto.AllEntitiesDto;
-import com.leverx.pets.dto.CatDogUserDto;
+import com.leverx.pets.model.dto.AllEntitiesDto;
+import com.leverx.pets.model.dto.CatDogUserDto;
 import com.leverx.pets.provider.AuthProvider;
-import com.leverx.pets.service.PetService;
-import com.leverx.pets.service.impl.PetsServiceTransactionCoordinator;
+import com.leverx.pets.service.UserPetService;
+import com.leverx.pets.service.impl.UserPetServiceTransactionCoordinatorImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,20 +18,20 @@ import org.springframework.web.context.annotation.RequestScope;
 @RestController
 @RequestMapping(value = "/proxy")
 @RequiredArgsConstructor
-public class PetController {
+public class UserPetController {
 
-    private final PetService petProxyService;
-    private final PetsServiceTransactionCoordinator petsServiceTransactionCoordinator;
+    private final UserPetService userPetService;
+    private final UserPetServiceTransactionCoordinatorImpl serviceTransactionCoordinator;
     private final AuthProvider authProvider;
 
     @GetMapping
     @RequestScope
-    public ResponseEntity<AllEntitiesDto> getUsersCatsDogs(
+    public ResponseEntity<AllEntitiesDto> getAll(
             @RequestHeader(value = "Authorization", defaultValue = "") String authHeader) {
 
         authProvider.setAuthHeader(authHeader);
         return ResponseEntity
-                .ok(petProxyService.getUsersCatsDogs());
+                .ok(userPetService.getAll());
     }
 
     @PostMapping
@@ -42,7 +42,7 @@ public class PetController {
 
         authProvider.setAuthHeader(authHeader);
         return ResponseEntity
-                .ok(petsServiceTransactionCoordinator.saveCatDogUser(entities));
+                .ok(serviceTransactionCoordinator.saveCatDogUser(entities));
     }
 
 }

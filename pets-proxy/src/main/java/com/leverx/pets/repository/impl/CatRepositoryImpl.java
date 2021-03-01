@@ -1,6 +1,6 @@
 package com.leverx.pets.repository.impl;
 
-import com.leverx.pets.dto.CatDto;
+import com.leverx.pets.model.dto.CatDto;
 import com.leverx.pets.provider.AuthProvider;
 import com.leverx.pets.repository.CatRepository;
 import lombok.RequiredArgsConstructor;
@@ -13,10 +13,11 @@ import org.springframework.web.client.RestTemplate;
 import java.util.List;
 import java.util.Optional;
 
-import static com.leverx.pets.repository.util.PetRepositoryUtil.getHttpEntityWithoutBody;
-import static com.leverx.pets.repository.util.PetRepositoryUtil.getHttpEntity;
-import static java.util.Arrays.asList;
+import static com.leverx.pets.repository.util.UserPetRepositoryUtil.getHttpEntity;
+import static com.leverx.pets.repository.util.UserPetRepositoryUtil.getHttpEntityWithoutBody;
+import static com.leverx.pets.repository.util.UserPetRepositoryUtil.formResponseEntityList;
 import static java.util.Optional.ofNullable;
+import static org.springframework.http.HttpMethod.DELETE;
 import static org.springframework.http.HttpMethod.GET;
 import static org.springframework.http.HttpMethod.POST;
 
@@ -31,7 +32,7 @@ public class CatRepositoryImpl implements CatRepository {
     private final AuthProvider authProvider;
 
     @Override
-    public List<CatDto> getCats() {
+    public List<CatDto> getAll() {
         RestTemplate restTemplate = new RestTemplate();
         HttpEntity<String> httpEntity = getHttpEntityWithoutBody(authProvider);
 
@@ -41,13 +42,11 @@ public class CatRepositoryImpl implements CatRepository {
                 httpEntity,
                 CatDto[].class);
 
-        return asList(
-                ofNullable(cats.getBody())
-                        .orElseGet(cats::getBody));
+        return formResponseEntityList(cats);
     }
 
     @Override
-    public Optional<CatDto> saveCat(CatDto cat) {
+    public Optional<CatDto> save(CatDto cat) {
         RestTemplate restTemplate = new RestTemplate();
         HttpEntity<CatDto> httpEntity = getHttpEntity(cat, authProvider);
 
@@ -58,6 +57,18 @@ public class CatRepositoryImpl implements CatRepository {
                 CatDto.class);
 
         return ofNullable(catDto.getBody());
+    }
+
+    @Override
+    public void deleteById(long id) {
+        RestTemplate restTemplate = new RestTemplate();
+        HttpEntity<Long> httpEntity = getHttpEntity(id, authProvider);
+
+        restTemplate.exchange(
+                backendUrl + CATS,
+                DELETE,
+                httpEntity,
+                Void.class);
     }
 
 }

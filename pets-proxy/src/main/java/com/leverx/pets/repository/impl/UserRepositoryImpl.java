@@ -13,10 +13,11 @@ import org.springframework.web.client.RestTemplate;
 import java.util.List;
 import java.util.Optional;
 
-import static com.leverx.pets.repository.util.PetRepositoryUtil.getHttpEntity;
-import static com.leverx.pets.repository.util.PetRepositoryUtil.getHttpEntityWithoutBody;
-import static java.util.Arrays.asList;
+import static com.leverx.pets.repository.util.UserPetRepositoryUtil.getHttpEntity;
+import static com.leverx.pets.repository.util.UserPetRepositoryUtil.getHttpEntityWithoutBody;
+import static com.leverx.pets.repository.util.UserPetRepositoryUtil.formResponseEntityList;
 import static java.util.Optional.ofNullable;
+import static org.springframework.http.HttpMethod.DELETE;
 import static org.springframework.http.HttpMethod.GET;
 import static org.springframework.http.HttpMethod.POST;
 
@@ -31,7 +32,7 @@ public class UserRepositoryImpl implements UserRepository {
     private final AuthProvider authProvider;
 
     @Override
-    public List<User> getUsers() {
+    public List<User> getAll() {
         RestTemplate restTemplate = new RestTemplate();
         HttpEntity<String> httpEntity = getHttpEntityWithoutBody(authProvider);
 
@@ -41,13 +42,11 @@ public class UserRepositoryImpl implements UserRepository {
                 httpEntity,
                 User[].class);
 
-        return asList(
-                ofNullable(users.getBody())
-                        .orElseGet(users::getBody));
+        return formResponseEntityList(users);
     }
 
     @Override
-    public Optional<User> saveUser(User user) {
+    public Optional<User> save(User user) {
         RestTemplate restTemplate = new RestTemplate();
         HttpEntity<User> httpEntity = getHttpEntity(user, authProvider);
 
@@ -58,6 +57,18 @@ public class UserRepositoryImpl implements UserRepository {
                 User.class);
 
         return ofNullable(userResponseEntity.getBody());
+    }
+
+    @Override
+    public void deleteById(long id) {
+        RestTemplate restTemplate = new RestTemplate();
+        HttpEntity<Long> httpEntity = getHttpEntity(id, authProvider);
+
+        restTemplate.exchange(
+                backendUrl + USERS,
+                DELETE,
+                httpEntity,
+                Void.class);
     }
 
 }

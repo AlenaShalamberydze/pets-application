@@ -1,6 +1,6 @@
 package com.leverx.pets.repository.impl;
 
-import com.leverx.pets.dto.DogDto;
+import com.leverx.pets.model.dto.DogDto;
 import com.leverx.pets.provider.AuthProvider;
 import com.leverx.pets.repository.DogRepository;
 import lombok.RequiredArgsConstructor;
@@ -13,10 +13,11 @@ import org.springframework.web.client.RestTemplate;
 import java.util.List;
 import java.util.Optional;
 
-import static com.leverx.pets.repository.util.PetRepositoryUtil.getHttpEntity;
-import static com.leverx.pets.repository.util.PetRepositoryUtil.getHttpEntityWithoutBody;
-import static java.util.Arrays.asList;
+import static com.leverx.pets.repository.util.UserPetRepositoryUtil.getHttpEntity;
+import static com.leverx.pets.repository.util.UserPetRepositoryUtil.getHttpEntityWithoutBody;
+import static com.leverx.pets.repository.util.UserPetRepositoryUtil.formResponseEntityList;
 import static java.util.Optional.ofNullable;
+import static org.springframework.http.HttpMethod.DELETE;
 import static org.springframework.http.HttpMethod.GET;
 import static org.springframework.http.HttpMethod.POST;
 
@@ -31,7 +32,7 @@ public class DogRepositoryImpl implements DogRepository {
     private final AuthProvider authProvider;
 
     @Override
-    public List<DogDto> getDogs() {
+    public List<DogDto> getAll() {
         RestTemplate restTemplate = new RestTemplate();
         HttpEntity<String> httpEntity = getHttpEntityWithoutBody(authProvider);
 
@@ -41,13 +42,11 @@ public class DogRepositoryImpl implements DogRepository {
                 httpEntity,
                 DogDto[].class);
 
-        return asList(
-                ofNullable(dogs.getBody())
-                        .orElseGet(dogs::getBody));
+        return formResponseEntityList(dogs);
     }
 
     @Override
-    public Optional<DogDto> saveDog(DogDto dog) {
+    public Optional<DogDto> save(DogDto dog) {
         RestTemplate restTemplate = new RestTemplate();
         HttpEntity<DogDto> httpEntity = getHttpEntity(dog, authProvider);
 
@@ -58,6 +57,18 @@ public class DogRepositoryImpl implements DogRepository {
                 DogDto.class);
 
         return ofNullable(dogDto.getBody());
+    }
+
+    @Override
+    public void deleteById(long id) {
+        RestTemplate restTemplate = new RestTemplate();
+        HttpEntity<Long> httpEntity = getHttpEntity(id, authProvider);
+
+        restTemplate.exchange(
+                backendUrl + DOGS,
+                DELETE,
+                httpEntity,
+                Void.class);
     }
 
 }
