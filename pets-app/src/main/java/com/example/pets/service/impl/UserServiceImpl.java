@@ -23,6 +23,7 @@ public class UserServiceImpl implements UserService {
     private final AnimalService animalService;
 
     @Override
+    @Transactional
     public User getById(long id) {
         log.info("Getting user from DB by id: {}", id);
         return userRepository.findById(id)

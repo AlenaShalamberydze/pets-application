@@ -1,7 +1,7 @@
 package com.example.pets.service.impl;
 
-import com.example.pets.dto.DTOMapper;
-import com.example.pets.dto.DogDTO;
+import com.example.pets.dto.DtoMapper;
+import com.example.pets.dto.DogDto;
 import com.example.pets.exception.NotFoundException;
 import com.example.pets.model.dog.Dog;
 import com.example.pets.repository.DogRepository;
@@ -14,8 +14,8 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.util.List;
 
-import static com.example.pets.dto.DTOMapper.fromDogDto;
-import static com.example.pets.dto.DTOMapper.toDogDto;
+import static com.example.pets.dto.DtoMapper.fromDogDto;
+import static com.example.pets.dto.DtoMapper.toDogDto;
 import static java.util.stream.Collectors.toList;
 
 @Service
@@ -37,24 +37,24 @@ public class DogServiceImpl implements DogService {
     }
 
     @Override
-    public List<DogDTO> getAllByUserId(long id) {
+    public List<DogDto> getAllByUserId(long id) {
         log.info("Getting dogs from DB by userId: {}", id);
         return dogRepository.getAllByUserId(id).stream()
-                .map(DTOMapper::toDogDto)
+                .map(DtoMapper::toDogDto)
                 .collect(toList());
     }
 
     @Override
-    public List<DogDTO> getAll() {
+    public List<DogDto> getAll() {
         log.info("Getting all dogs from DB");
         return dogRepository.findAll().stream()
-                .map(DTOMapper::toDogDto)
+                .map(DtoMapper::toDogDto)
                 .collect(toList());
     }
 
     @Override
     @Transactional
-    public DogDTO save(DogDTO dogDTO) {
+    public DogDto save(DogDto dogDTO) {
         log.info("Saving dog into DB");
         Dog dog = fromDogDto(dogDTO);
         dog.setUser(userRepository.findById(dogDTO.getUserId())
@@ -67,7 +67,7 @@ public class DogServiceImpl implements DogService {
 
     @Override
     @Transactional
-    public DogDTO update(DogDTO dogDTO) {
+    public DogDto update(DogDto dogDTO) {
         log.info("Updating dog in DB");
         Dog dog = fromDogDto(dogDTO);
         dog.setUser(userRepository.findById(dogDTO.getUserId())

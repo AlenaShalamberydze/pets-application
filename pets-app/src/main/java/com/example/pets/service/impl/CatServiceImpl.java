@@ -1,7 +1,7 @@
 package com.example.pets.service.impl;
 
-import com.example.pets.dto.CatDTO;
-import com.example.pets.dto.DTOMapper;
+import com.example.pets.dto.CatDto;
+import com.example.pets.dto.DtoMapper;
 import com.example.pets.exception.NotFoundException;
 import com.example.pets.model.cat.Cat;
 import com.example.pets.repository.CatRepository;
@@ -14,8 +14,8 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.util.List;
 
-import static com.example.pets.dto.DTOMapper.fromCatDto;
-import static com.example.pets.dto.DTOMapper.toCatDto;
+import static com.example.pets.dto.DtoMapper.fromCatDto;
+import static com.example.pets.dto.DtoMapper.toCatDto;
 import static java.util.stream.Collectors.toList;
 
 @Service
@@ -37,24 +37,24 @@ public class CatServiceImpl implements CatService {
     }
 
     @Override
-    public List<CatDTO> getAll() {
+    public List<CatDto> getAll() {
         log.info("Getting all cats from DB");
         return catRepository.findAll().stream()
-                .map(DTOMapper::toCatDto)
+                .map(DtoMapper::toCatDto)
                 .collect(toList());
     }
 
     @Override
-    public List<CatDTO> getAllByUserId(long id) {
+    public List<CatDto> getAllByUserId(long id) {
         log.info("Getting cats from DB by userId: {}", id);
         return catRepository.getAllByUserId(id).stream()
-                .map(DTOMapper::toCatDto)
+                .map(DtoMapper::toCatDto)
                 .collect(toList());
     }
 
     @Override
     @Transactional
-    public CatDTO save(CatDTO catDTO) {
+    public CatDto save(CatDto catDTO) {
         log.info("Saving cat into DB");
         Cat cat = fromCatDto(catDTO);
         cat.setUser(userRepository.findById(catDTO.getUserId())
@@ -67,7 +67,7 @@ public class CatServiceImpl implements CatService {
 
     @Override
     @Transactional
-    public CatDTO update(CatDTO catDTO) {
+    public CatDto update(CatDto catDTO) {
         log.info("Updating cat in DB");
         Cat cat = fromCatDto(catDTO);
         cat.setUser(userRepository.findById(catDTO.getUserId())

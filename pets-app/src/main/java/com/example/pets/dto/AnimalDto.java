@@ -7,12 +7,11 @@ import lombok.Data;
 @Data
 @Builder
 @AllArgsConstructor
-public class CatDTO {
+public class AnimalDto {
 
     private long id;
     private String name;
     private int age;
-    private String character;
     private long userId;
 
 }
