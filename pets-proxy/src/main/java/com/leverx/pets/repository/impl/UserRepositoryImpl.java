@@ -11,21 +11,21 @@ import org.springframework.stereotype.Repository;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
-import java.util.Optional;
 
+import static com.leverx.pets.repository.util.UserPetRepositoryUtil.formResponseEntityList;
 import static com.leverx.pets.repository.util.UserPetRepositoryUtil.getHttpEntity;
 import static com.leverx.pets.repository.util.UserPetRepositoryUtil.getHttpEntityWithoutBody;
-import static com.leverx.pets.repository.util.UserPetRepositoryUtil.formResponseEntityList;
-import static java.util.Optional.ofNullable;
 import static org.springframework.http.HttpMethod.DELETE;
 import static org.springframework.http.HttpMethod.GET;
 import static org.springframework.http.HttpMethod.POST;
+
 
 @Repository
 @RequiredArgsConstructor
 public class UserRepositoryImpl implements UserRepository {
 
     private static final String USERS = "/users";
+    private static final String DELETE_USER = "/users/";
 
     @Value(value = "${backend.server.url}")
     private final String backendUrl;
@@ -34,41 +34,30 @@ public class UserRepositoryImpl implements UserRepository {
     @Override
     public List<User> getAll() {
         RestTemplate restTemplate = new RestTemplate();
-        HttpEntity<String> httpEntity = getHttpEntityWithoutBody(authProvider);
-
-        ResponseEntity<User[]> users = restTemplate.exchange(
-                backendUrl + USERS,
-                GET,
-                httpEntity,
-                User[].class);
-
+        HttpEntity<String> httpEntity = getHttpEntityWithoutBody(authProvider.getAuthHeader());
+        String url = backendUrl + USERS;
+        ResponseEntity<User[]> users = restTemplate
+                .exchange(url, GET, httpEntity, User[].class);
         return formResponseEntityList(users);
     }
 
     @Override
-    public Optional<User> save(User user) {
+    public User save(User user) {
         RestTemplate restTemplate = new RestTemplate();
-        HttpEntity<User> httpEntity = getHttpEntity(user, authProvider);
-
-        ResponseEntity<User> userResponseEntity = restTemplate.exchange(
-                backendUrl + USERS,
-                POST,
-                httpEntity,
-                User.class);
-
-        return ofNullable(userResponseEntity.getBody());
+        HttpEntity<User> httpEntity = getHttpEntity(user, authProvider.getAuthHeader());
+        String url = backendUrl + USERS;
+        ResponseEntity<User> userResponse = restTemplate
+                .exchange(url, POST, httpEntity, User.class);
+        return userResponse.getBody();
     }
 
     @Override
     public void deleteById(long id) {
         RestTemplate restTemplate = new RestTemplate();
-        HttpEntity<Long> httpEntity = getHttpEntity(id, authProvider);
-
-        restTemplate.exchange(
-                backendUrl + USERS,
-                DELETE,
-                httpEntity,
-                Void.class);
+        HttpEntity<Long> httpEntity = getHttpEntity(id, authProvider.getAuthHeader());
+        String url = backendUrl + DELETE_USER + id;
+        restTemplate
+                .exchange(url, DELETE, httpEntity, Void.class);
     }
 
 }

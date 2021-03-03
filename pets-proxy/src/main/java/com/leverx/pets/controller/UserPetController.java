@@ -1,10 +1,11 @@
 package com.leverx.pets.controller;
 
-import com.leverx.pets.model.dto.AllEntitiesDto;
-import com.leverx.pets.model.dto.CatDogUserDto;
+import com.leverx.pets.dto.request.UserCatDogRequest;
+import com.leverx.pets.dto.response.AllEntitiesResponse;
+import com.leverx.pets.dto.response.UserCatDogResponse;
 import com.leverx.pets.provider.AuthProvider;
 import com.leverx.pets.service.UserPetService;
-import com.leverx.pets.service.impl.UserPetServiceTransactionCoordinatorImpl;
+import com.leverx.pets.service.UserPetServiceTransactionCoordinator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,12 +22,12 @@ import org.springframework.web.context.annotation.RequestScope;
 public class UserPetController {
 
     private final UserPetService userPetService;
-    private final UserPetServiceTransactionCoordinatorImpl serviceTransactionCoordinator;
+    private final UserPetServiceTransactionCoordinator serviceTransactionCoordinator;
     private final AuthProvider authProvider;
 
     @GetMapping
     @RequestScope
-    public ResponseEntity<AllEntitiesDto> getAll(
+    public ResponseEntity<AllEntitiesResponse> getAll(
             @RequestHeader(value = "Authorization", defaultValue = "") String authHeader) {
 
         authProvider.setAuthHeader(authHeader);
@@ -36,13 +37,13 @@ public class UserPetController {
 
     @PostMapping
     @RequestScope
-    public ResponseEntity<CatDogUserDto> saveUserCatDog(
+    public ResponseEntity<UserCatDogResponse> saveUserCatDog(
             @RequestHeader(value = "Authorization", defaultValue = "") String authHeader,
-            @RequestBody CatDogUserDto entities) {
+            @RequestBody UserCatDogRequest entities) {
 
         authProvider.setAuthHeader(authHeader);
         return ResponseEntity
-                .ok(serviceTransactionCoordinator.saveCatDogUser(entities));
+                .ok(serviceTransactionCoordinator.saveUserCatDog(entities));
     }
 
 }

@@ -1,6 +1,8 @@
 package com.example.pets.controller;
 
-import com.example.pets.dto.CatDto;
+import com.example.pets.dto.request.RequestCat;
+import com.example.pets.dto.request.RequestDog;
+import com.example.pets.dto.response.ResponseCat;
 import com.example.pets.service.CatService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -25,28 +27,27 @@ public class CatController {
     private final CatService catService;
 
     @GetMapping(value = "/{id}")
-    public ResponseEntity<CatDto> findById(@PathVariable long id) {
+    public ResponseEntity<ResponseCat> findById(@PathVariable long id) {
         return ResponseEntity
                 .ok(toCatDto(catService.getById(id)));
     }
 
     @GetMapping
-    public ResponseEntity<List<CatDto>> findAll() {
+    public ResponseEntity<List<ResponseCat>> findAll() {
         return ResponseEntity
                 .ok(catService.getAll());
     }
 
     @PostMapping
-    public ResponseEntity<CatDto> add(@RequestBody CatDto catDTO) {
+    public ResponseEntity<ResponseCat> add(@RequestBody RequestCat requestCat) {
         return ResponseEntity
-                .ok(catService.save(catDTO));
+                .ok(catService.save(requestCat));
     }
 
     @PutMapping(value = "/{id}")
     public ResponseEntity<String> update(@PathVariable long id,
-                                         @RequestBody CatDto catDTO) {
-        catDTO.setId(id);
-        catService.update(catDTO);
+                                         @RequestBody RequestCat requestCat) {
+        catService.update(requestCat, id);
         return ResponseEntity
                 .ok()
                 .build();

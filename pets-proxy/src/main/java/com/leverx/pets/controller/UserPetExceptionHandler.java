@@ -13,14 +13,14 @@ public class UserPetExceptionHandler {
     ResponseEntity<String> clientExceptionHandler(HttpClientErrorException e) {
         return ResponseEntity
                 .status(e.getStatusCode())
-                .build();
+                .body(e.getMessage());
     }
 
     @ExceptionHandler(HttpServerErrorException.class)
     ResponseEntity<String> serverExceptionHandler(HttpServerErrorException e){
         return ResponseEntity
                 .status(e.getStatusCode())
-                .build();
+                .body("Smth went wrong... try again later");
     }
 
 }

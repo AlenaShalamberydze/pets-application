@@ -1,7 +1,8 @@
 package com.example.pets.service.impl;
 
 import com.example.pets.dto.DtoMapper;
-import com.example.pets.dto.DogDto;
+import com.example.pets.dto.request.RequestDog;
+import com.example.pets.dto.response.ResponseDog;
 import com.example.pets.exception.NotFoundException;
 import com.example.pets.model.dog.Dog;
 import com.example.pets.repository.DogRepository;
@@ -37,7 +38,7 @@ public class DogServiceImpl implements DogService {
     }
 
     @Override
-    public List<DogDto> getAllByUserId(long id) {
+    public List<ResponseDog> getAllByUserId(long id) {
         log.info("Getting dogs from DB by userId: {}", id);
         return dogRepository.getAllByUserId(id).stream()
                 .map(DtoMapper::toDogDto)
@@ -45,7 +46,7 @@ public class DogServiceImpl implements DogService {
     }
 
     @Override
-    public List<DogDto> getAll() {
+    public List<ResponseDog> getAll() {
         log.info("Getting all dogs from DB");
         return dogRepository.findAll().stream()
                 .map(DtoMapper::toDogDto)
@@ -54,10 +55,10 @@ public class DogServiceImpl implements DogService {
 
     @Override
     @Transactional
-    public DogDto save(DogDto dogDTO) {
+    public ResponseDog save(RequestDog requestDog) {
         log.info("Saving dog into DB");
-        Dog dog = fromDogDto(dogDTO);
-        dog.setUser(userRepository.findById(dogDTO.getUserId())
+        Dog dog = fromDogDto(requestDog);
+        dog.setUser(userRepository.findById(requestDog.getUserId())
                 .orElseThrow(() -> {
                     log.error("Troubles saving Dog into DB: user not found");
                     return new NotFoundException("User not found");
@@ -67,10 +68,11 @@ public class DogServiceImpl implements DogService {
 
     @Override
     @Transactional
-    public DogDto update(DogDto dogDTO) {
+    public ResponseDog update(RequestDog requestDog, long id) {
         log.info("Updating dog in DB");
-        Dog dog = fromDogDto(dogDTO);
-        dog.setUser(userRepository.findById(dogDTO.getUserId())
+        Dog dog = fromDogDto(requestDog);
+        dog.setId(id);
+        dog.setUser(userRepository.findById(requestDog.getUserId())
                 .orElseThrow(() -> {
                     log.error("Troubles updating Dog: user not found");
                     return new NotFoundException("User not found");

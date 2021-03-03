@@ -1,6 +1,6 @@
 package com.example.pets.controller;
 
-import com.example.pets.dto.AnimalDto;
+import com.example.pets.dto.response.ResponseAnimal;
 import com.example.pets.service.AnimalService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -22,7 +22,7 @@ public class AnimalController {
     private final AnimalService animalService;
 
     @GetMapping(value = "/{id}")
-    public ResponseEntity<AnimalDto> findById(@PathVariable long id) {
+    public ResponseEntity<ResponseAnimal> findById(@PathVariable long id) {
         return ResponseEntity
                 .ok(toDto(animalService.getById(id)));
     }
@@ -36,7 +36,7 @@ public class AnimalController {
     }
 
     @GetMapping
-    public ResponseEntity<List<AnimalDto>> findAll() {
+    public ResponseEntity<List<ResponseAnimal>> findAll() {
         return ResponseEntity
                 .ok(animalService.getAll());
     }

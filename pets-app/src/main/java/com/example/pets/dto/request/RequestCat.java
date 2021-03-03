@@ -1,6 +1,5 @@
-package com.example.pets.dto;
+package com.example.pets.dto.request;
 
-import com.example.pets.model.dog.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -8,11 +7,13 @@ import lombok.Data;
 @Data
 @Builder
 @AllArgsConstructor
-public class DogDto {
+public class RequestCat {
 
-    private long id;
     private String name;
     private int age;
-    private Size size;
+    private String character;
     private long userId;
+
+
+
 }

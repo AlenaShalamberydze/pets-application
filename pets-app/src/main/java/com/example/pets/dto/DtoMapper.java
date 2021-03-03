@@ -1,10 +1,16 @@
 package com.example.pets.dto;
 
+import com.example.pets.dto.request.RequestCat;
+import com.example.pets.dto.request.RequestDog;
+import com.example.pets.dto.response.ResponseAnimal;
+import com.example.pets.dto.response.ResponseCat;
+import com.example.pets.dto.response.ResponseDog;
 import com.example.pets.model.animal.Animal;
 import com.example.pets.model.cat.Cat;
 import com.example.pets.model.dog.Dog;
 import com.example.pets.model.user.User;
 import lombok.NoArgsConstructor;
+import sun.misc.Request;
 
 import static org.apache.commons.lang3.ObjectUtils.anyNull;
 import static lombok.AccessLevel.PRIVATE;
@@ -12,8 +18,8 @@ import static lombok.AccessLevel.PRIVATE;
 @NoArgsConstructor(access = PRIVATE)
 public final class DtoMapper {
 
-    public static AnimalDto toDto(Animal animal) {
-        return AnimalDto.builder()
+    public static ResponseAnimal toDto(Animal animal) {
+        return ResponseAnimal.builder()
                 .id(animal.getId())
                 .name(animal.getName())
                 .age(animal.getAge())
@@ -21,8 +27,8 @@ public final class DtoMapper {
                 .build();
     }
 
-    public static CatDto toCatDto(Cat cat) {
-        return CatDto.builder()
+    public static ResponseCat toCatDto(Cat cat) {
+        return ResponseCat.builder()
                 .id(cat.getId())
                 .name(cat.getName())
                 .age(cat.getAge())
@@ -31,8 +37,8 @@ public final class DtoMapper {
                 .build();
     }
 
-    public static DogDto toDogDto(Dog dog) {
-        return DogDto.builder()
+    public static ResponseDog toDogDto(Dog dog) {
+        return ResponseDog.builder()
                 .id(dog.getId())
                 .name(dog.getName())
                 .age(dog.getAge())
@@ -41,21 +47,19 @@ public final class DtoMapper {
                 .build();
     }
 
-    public static Cat fromCatDto(CatDto catDTO) {
+    public static Cat fromCatDto(RequestCat requestCat) {
         return Cat.builder()
-                .id(catDTO.getId())
-                .name(catDTO.getName())
-                .age(catDTO.getAge())
-                .character(catDTO.getCharacter())
+                .name(requestCat.getName())
+                .age(requestCat.getAge())
+                .character(requestCat.getCharacter())
                 .build();
     }
 
-    public static Dog fromDogDto(DogDto dogDTO) {
+    public static Dog fromDogDto(RequestDog requestDog) {
         return Dog.builder()
-                .id(dogDTO.getId())
-                .name(dogDTO.getName())
-                .age(dogDTO.getAge())
-                .size(dogDTO.getSize())
+                .name(requestDog.getName())
+                .age(requestDog.getAge())
+                .size(requestDog.getSize())
                 .build();
     }
 

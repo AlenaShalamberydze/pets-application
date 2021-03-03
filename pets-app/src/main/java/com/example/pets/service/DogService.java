@@ -1,6 +1,7 @@
 package com.example.pets.service;
 
-import com.example.pets.dto.DogDto;
+import com.example.pets.dto.request.RequestDog;
+import com.example.pets.dto.response.ResponseDog;
 import com.example.pets.model.dog.Dog;
 
 import java.util.List;
@@ -9,13 +10,13 @@ public interface DogService {
 
     Dog getById(long dogId);
 
-    List<DogDto> getAll();
+    List<ResponseDog> getAll();
 
-    List<DogDto> getAllByUserId(long userId);
+    List<ResponseDog> getAllByUserId(long userId);
 
-    DogDto save(DogDto dogDTO);
+    ResponseDog save(RequestDog requestDog);
 
-    DogDto update(DogDto dogDTO);
+    ResponseDog update(RequestDog requestDog, long id);
 
     void deleteById(long dogId);
 

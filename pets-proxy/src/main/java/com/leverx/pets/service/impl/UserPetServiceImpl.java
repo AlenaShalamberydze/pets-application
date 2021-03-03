@@ -1,6 +1,6 @@
 package com.leverx.pets.service.impl;
 
-import com.leverx.pets.model.dto.AllEntitiesDto;
+import com.leverx.pets.dto.response.AllEntitiesResponse;
 import com.leverx.pets.repository.CatRepository;
 import com.leverx.pets.repository.DogRepository;
 import com.leverx.pets.repository.UserRepository;
@@ -14,16 +14,16 @@ import org.springframework.stereotype.Service;
 @Slf4j
 public class UserPetServiceImpl implements UserPetService {
 
+    private final UserRepository userRepository;
     private final CatRepository catRepository;
     private final DogRepository dogRepository;
-    private final UserRepository userRepository;
 
     @Override
-    public AllEntitiesDto getAll() {
+    public AllEntitiesResponse getAll() {
         log.info("Getting all cats-dogs-users from pets-app service");
-        return new AllEntitiesDto(catRepository.getAll(),
-                dogRepository.getAll(),
-                userRepository.getAll());
+        return new AllEntitiesResponse(userRepository.getAll(),
+                catRepository.getAll(),
+                dogRepository.getAll());
     }
 
 }

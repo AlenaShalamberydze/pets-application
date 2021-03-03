@@ -9,7 +9,7 @@ public interface UserRepository {
 
     List<User> getAll();
 
-    Optional<User> save(User user);
+    User save(User user);
 
     void deleteById(long id);
 }

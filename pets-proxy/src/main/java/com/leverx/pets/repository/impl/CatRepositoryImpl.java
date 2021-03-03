@@ -1,6 +1,7 @@
 package com.leverx.pets.repository.impl;
 
-import com.leverx.pets.model.dto.CatDto;
+import com.leverx.pets.dto.request.CatRequest;
+import com.leverx.pets.dto.response.CatResponse;
 import com.leverx.pets.provider.AuthProvider;
 import com.leverx.pets.repository.CatRepository;
 import lombok.RequiredArgsConstructor;
@@ -11,12 +12,10 @@ import org.springframework.stereotype.Repository;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
-import java.util.Optional;
 
+import static com.leverx.pets.repository.util.UserPetRepositoryUtil.formResponseEntityList;
 import static com.leverx.pets.repository.util.UserPetRepositoryUtil.getHttpEntity;
 import static com.leverx.pets.repository.util.UserPetRepositoryUtil.getHttpEntityWithoutBody;
-import static com.leverx.pets.repository.util.UserPetRepositoryUtil.formResponseEntityList;
-import static java.util.Optional.ofNullable;
 import static org.springframework.http.HttpMethod.DELETE;
 import static org.springframework.http.HttpMethod.GET;
 import static org.springframework.http.HttpMethod.POST;
@@ -26,49 +25,39 @@ import static org.springframework.http.HttpMethod.POST;
 public class CatRepositoryImpl implements CatRepository {
 
     private static final String CATS = "/cats";
+    private static final String DELETE_CAT = "/cats/";
 
     @Value(value = "${backend.server.url}")
     private final String backendUrl;
     private final AuthProvider authProvider;
 
     @Override
-    public List<CatDto> getAll() {
+    public List<CatResponse> getAll() {
         RestTemplate restTemplate = new RestTemplate();
-        HttpEntity<String> httpEntity = getHttpEntityWithoutBody(authProvider);
-
-        ResponseEntity<CatDto[]> cats = restTemplate.exchange(
-                backendUrl + CATS,
-                GET,
-                httpEntity,
-                CatDto[].class);
-
+        HttpEntity<String> httpEntity = getHttpEntityWithoutBody(authProvider.getAuthHeader());
+        String url = backendUrl + CATS;
+        ResponseEntity<CatResponse[]> cats = restTemplate
+                .exchange(url, GET, httpEntity, CatResponse[].class);
         return formResponseEntityList(cats);
     }
 
     @Override
-    public Optional<CatDto> save(CatDto cat) {
+    public CatResponse save(CatRequest cat) {
         RestTemplate restTemplate = new RestTemplate();
-        HttpEntity<CatDto> httpEntity = getHttpEntity(cat, authProvider);
-
-        ResponseEntity<CatDto> catDto = restTemplate.exchange(
-                backendUrl + CATS,
-                POST,
-                httpEntity,
-                CatDto.class);
-
-        return ofNullable(catDto.getBody());
+        HttpEntity<CatRequest> httpEntity = getHttpEntity(cat, authProvider.getAuthHeader());
+        String url = backendUrl + CATS;
+        ResponseEntity<CatResponse> catResponse = restTemplate
+                .exchange(url, POST, httpEntity, CatResponse.class);
+        return catResponse.getBody();
     }
 
     @Override
     public void deleteById(long id) {
         RestTemplate restTemplate = new RestTemplate();
-        HttpEntity<Long> httpEntity = getHttpEntity(id, authProvider);
-
-        restTemplate.exchange(
-                backendUrl + CATS,
-                DELETE,
-                httpEntity,
-                Void.class);
+        HttpEntity<Long> httpEntity = getHttpEntity(id, authProvider.getAuthHeader());
+        String url = backendUrl + DELETE_CAT + id;
+        restTemplate
+                .exchange(url, DELETE, httpEntity, Void.class);
     }
 
 }

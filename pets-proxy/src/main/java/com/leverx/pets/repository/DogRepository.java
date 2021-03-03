@@ -1,15 +1,15 @@
 package com.leverx.pets.repository;
 
-import com.leverx.pets.model.dto.DogDto;
+import com.leverx.pets.dto.request.DogRequest;
+import com.leverx.pets.dto.response.DogResponse;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface DogRepository {
 
-    List<DogDto> getAll();
+    List<DogResponse> getAll();
 
-    Optional<DogDto> save(DogDto dog);
+    DogResponse save(DogRequest dog);
 
     void deleteById(long id);
 }

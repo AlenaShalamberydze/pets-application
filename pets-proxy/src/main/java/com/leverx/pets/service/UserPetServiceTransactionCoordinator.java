@@ -1,8 +1,9 @@
 package com.leverx.pets.service;
 
-import com.leverx.pets.model.dto.CatDogUserDto;
+import com.leverx.pets.dto.request.UserCatDogRequest;
+import com.leverx.pets.dto.response.UserCatDogResponse;
 
 public interface UserPetServiceTransactionCoordinator {
 
-    CatDogUserDto saveCatDogUser(CatDogUserDto userCatDogDto);
+    UserCatDogResponse saveUserCatDog(UserCatDogRequest userCatDog);
 }

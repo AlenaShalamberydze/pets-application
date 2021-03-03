@@ -1,13 +1,12 @@
 package com.leverx.pets.service.impl;
 
-import com.leverx.pets.model.dto.DogDto;
+import com.leverx.pets.dto.request.DogRequest;
+import com.leverx.pets.dto.response.DogResponse;
 import com.leverx.pets.repository.DogRepository;
 import com.leverx.pets.service.DogService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -17,7 +16,7 @@ public class DogServiceImpl implements DogService {
 
     @Override
     @Transactional
-    public Optional<DogDto> save(DogDto dog) {
+    public DogResponse save(DogRequest dog) {
         return dogRepository.save(dog);
     }
 

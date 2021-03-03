@@ -1,19 +1,17 @@
-package com.leverx.pets.model.dto;
+package com.example.pets.dto.request;
 
-import com.leverx.pets.model.dog.Size;
+import com.example.pets.model.dog.Size;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 @Data
+@Builder
 @AllArgsConstructor
-@NoArgsConstructor
-public class DogDto {
+public class RequestDog {
 
-    private long id;
     private String name;
     private int age;
     private Size size;
     private long userId;
-
 }

@@ -1,9 +1,9 @@
 package com.leverx.pets.service;
 
-import com.leverx.pets.model.dto.AllEntitiesDto;
+import com.leverx.pets.dto.response.AllEntitiesResponse;
 
 public interface UserPetService {
 
-    AllEntitiesDto getAll();
+    AllEntitiesResponse getAll();
 
 }

@@ -1,6 +1,6 @@
 package com.example.pets.service.impl;
 
-import com.example.pets.dto.AnimalDto;
+import com.example.pets.dto.response.ResponseAnimal;
 import com.example.pets.dto.DtoMapper;
 import com.example.pets.exception.NotFoundException;
 import com.example.pets.model.animal.Animal;
@@ -39,7 +39,7 @@ public class AnimalServiceImpl implements AnimalService {
     }
 
     @Override
-    public List<AnimalDto> getAll() {
+    public List<ResponseAnimal> getAll() {
         log.info("Getting all animals from DB");
         return animalRepository.findAll().stream()
                 .map(DtoMapper::toDto)

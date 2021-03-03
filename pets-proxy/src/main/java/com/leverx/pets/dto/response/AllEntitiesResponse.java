@@ -1,4 +1,4 @@
-package com.leverx.pets.model.dto;
+package com.leverx.pets.dto.response;
 
 import com.leverx.pets.model.user.User;
 import lombok.AllArgsConstructor;
@@ -8,10 +8,10 @@ import java.util.List;
 
 @Data
 @AllArgsConstructor
-public class AllEntitiesDto {
+public class AllEntitiesResponse {
 
-    private List<CatDto> cats;
-    private List<DogDto> dogs;
     private List<User> users;
+    private List<CatResponse> cats;
+    private List<DogResponse> dogs;
 
 }

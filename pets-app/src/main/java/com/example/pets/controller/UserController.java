@@ -1,8 +1,8 @@
 package com.example.pets.controller;
 
-import com.example.pets.dto.AnimalDto;
-import com.example.pets.dto.CatDto;
-import com.example.pets.dto.DogDto;
+import com.example.pets.dto.response.ResponseAnimal;
+import com.example.pets.dto.response.ResponseCat;
+import com.example.pets.dto.response.ResponseDog;
 import com.example.pets.dto.DtoMapper;
 import com.example.pets.model.user.User;
 import com.example.pets.service.AnimalService;
@@ -69,20 +69,20 @@ public class UserController {
     }
 
     @GetMapping(value = "/{id}/cats")
-    public ResponseEntity<List<CatDto>> findCatsByUserId(@PathVariable long id) {
+    public ResponseEntity<List<ResponseCat>> findCatsByUserId(@PathVariable long id) {
         return ResponseEntity
                 .ok(catService.getAllByUserId(id));
     }
 
     @GetMapping(value = "/{id}/dogs")
-    public ResponseEntity<List<DogDto>> findDogsByUserId(@PathVariable long id) {
+    public ResponseEntity<List<ResponseDog>> findDogsByUserId(@PathVariable long id) {
         return ResponseEntity
                 .ok(dogService.getAllByUserId(id));
     }
 
     @GetMapping(value = "/{id}/animals")
-    public ResponseEntity<List<AnimalDto>> getAnimalsByUserId(@PathVariable long id) {
-        List<AnimalDto> animals = animalService.getAllByUserId(id).stream()
+    public ResponseEntity<List<ResponseAnimal>> getAnimalsByUserId(@PathVariable long id) {
+        List<ResponseAnimal> animals = animalService.getAllByUserId(id).stream()
                 .map(DtoMapper::toDto)
                 .collect(toList());
         return ResponseEntity
