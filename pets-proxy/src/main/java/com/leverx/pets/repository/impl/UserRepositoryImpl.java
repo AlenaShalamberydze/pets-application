@@ -26,8 +26,7 @@ import static org.springframework.http.HttpMethod.POST;
 @RequiredArgsConstructor
 public class UserRepositoryImpl implements UserRepository {
 
-    private static final String USERS = "/users";
-    private static final String DELETE_USER = "/users/";
+    private static final String USERS = "/users/";
 
     @Value(value = "${backend.server.url}")
     private final String backendUrl;
@@ -57,7 +56,7 @@ public class UserRepositoryImpl implements UserRepository {
     public void deleteById(long id) {
         RestTemplate restTemplate = new RestTemplate();
         HttpEntity<Long> httpEntity = getHttpEntity(id, authProvider.getAuthHeader());
-        String url = backendUrl + DELETE_USER + id;
+        String url = backendUrl + USERS + id;
         restTemplate
                 .exchange(url, DELETE, httpEntity, Void.class);
     }

@@ -8,9 +8,8 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class DogResponse implements ResponseEntity {
+public class DogResponse {
 
-    private final String type = "dog";
     private long id;
     private String name;
     private int age;

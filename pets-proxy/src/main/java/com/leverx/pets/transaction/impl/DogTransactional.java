@@ -2,6 +2,7 @@ package com.leverx.pets.transaction.impl;
 
 import com.leverx.pets.dto.request.DogRequest;
 import com.leverx.pets.dto.response.DogResponse;
+import com.leverx.pets.dto.response.UserCatDogResponse;
 import com.leverx.pets.service.DogService;
 import com.leverx.pets.transaction.Transactional;
 import lombok.AllArgsConstructor;
@@ -35,6 +36,11 @@ public class DogTransactional implements Transactional {
     public void rollback() {
         long id = (long) currentRequestAttributes().getAttribute(DOG_ID, SCOPE_REQUEST);
         dogService.deleteById(id);
+    }
+
+    @Override
+    public <T> void addEntityToResponse(UserCatDogResponse response, T entity) {
+        response.setDog((DogResponse) entity);
     }
 
 }

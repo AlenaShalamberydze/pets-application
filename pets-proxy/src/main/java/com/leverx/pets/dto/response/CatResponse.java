@@ -7,9 +7,8 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class CatResponse implements ResponseEntity {
+public class CatResponse {
 
-    private final String type = "cat";
     private long id;
     private String name;
     private int age;

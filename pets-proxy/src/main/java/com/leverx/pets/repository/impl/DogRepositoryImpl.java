@@ -24,8 +24,7 @@ import static org.springframework.http.HttpMethod.POST;
 @RequiredArgsConstructor
 public class DogRepositoryImpl implements DogRepository {
 
-    private static final String DOGS = "/dogs";
-    private static final String DELETE_DOGS = "/dogs/";
+    private static final String DOGS = "/dogs/";
 
     @Value(value = "${backend.server.url}")
     private final String backendUrl;
@@ -55,7 +54,7 @@ public class DogRepositoryImpl implements DogRepository {
     public void deleteById(long id) {
         RestTemplate restTemplate = new RestTemplate();
         HttpEntity<Long> httpEntity = getHttpEntity(id, authProvider.getAuthHeader());
-        String url = backendUrl + DELETE_DOGS + id;
+        String url = backendUrl + DOGS + id;
         restTemplate
                 .exchange(url, DELETE, httpEntity, Void.class);
     }

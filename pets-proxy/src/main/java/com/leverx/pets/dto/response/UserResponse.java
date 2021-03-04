@@ -4,9 +4,8 @@ import com.leverx.pets.model.user.Role;
 import lombok.Data;
 
 @Data
-public class UserResponse implements ResponseEntity {
+public class UserResponse {
 
-    private final String type = "user";
     private long id;
     private String username;
     private String password;

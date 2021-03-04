@@ -1,6 +1,7 @@
 package com.leverx.pets.transaction.impl;
 
 import com.leverx.pets.dto.request.UserRequest;
+import com.leverx.pets.dto.response.UserCatDogResponse;
 import com.leverx.pets.dto.response.UserResponse;
 import com.leverx.pets.service.UserService;
 import com.leverx.pets.transaction.Transactional;
@@ -30,6 +31,11 @@ public class UserTransactional implements Transactional {
     public void rollback() {
         long id = (long) currentRequestAttributes().getAttribute(USER_ID, SCOPE_REQUEST);
         userService.deleteById(id);
+    }
+
+    @Override
+    public <T> void addEntityToResponse(UserCatDogResponse response, T entity) {
+        response.setUser((UserResponse) entity);
     }
 
 }

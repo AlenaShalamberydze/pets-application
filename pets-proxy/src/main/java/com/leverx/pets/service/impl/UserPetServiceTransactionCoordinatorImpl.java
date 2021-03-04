@@ -1,7 +1,6 @@
 package com.leverx.pets.service.impl;
 
 import com.leverx.pets.dto.request.UserCatDogRequest;
-import com.leverx.pets.dto.response.ResponseEntity;
 import com.leverx.pets.dto.response.UserCatDogResponse;
 import com.leverx.pets.service.CatService;
 import com.leverx.pets.service.DogService;
@@ -14,7 +13,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.HttpServerErrorException;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -38,11 +36,11 @@ public class UserPetServiceTransactionCoordinatorImpl implements UserPetServiceT
 
         List<Transactional> transactions = formTransactionalList(userCatDog);
         List<Transactional> executedTransactions = new LinkedList<>();
-        List<ResponseEntity> entities = new ArrayList<>();
+        UserCatDogResponse response = new UserCatDogResponse();
 
         transactions.forEach(transaction -> {
             try {
-                entities.add(transaction.executeSave());
+                transaction.addEntityToResponse(response, transaction.executeSave());
                 executedTransactions.add(transaction);
             } catch (HttpClientErrorException | HttpServerErrorException ex) {
                 log.error("Troubles saving entities into DB: rollback has started");
@@ -52,7 +50,7 @@ public class UserPetServiceTransactionCoordinatorImpl implements UserPetServiceT
             }
         });
 
-        return new UserCatDogResponse(entities);
+        return response;
     }
 
     private List<Transactional> formTransactionalList(UserCatDogRequest userCatDog) {

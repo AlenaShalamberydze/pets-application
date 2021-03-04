@@ -24,8 +24,7 @@ import static org.springframework.http.HttpMethod.POST;
 @RequiredArgsConstructor
 public class CatRepositoryImpl implements CatRepository {
 
-    private static final String CATS = "/cats";
-    private static final String DELETE_CAT = "/cats/";
+    private static final String CATS = "/cats/";
 
     @Value(value = "${backend.server.url}")
     private final String backendUrl;
@@ -55,7 +54,7 @@ public class CatRepositoryImpl implements CatRepository {
     public void deleteById(long id) {
         RestTemplate restTemplate = new RestTemplate();
         HttpEntity<Long> httpEntity = getHttpEntity(id, authProvider.getAuthHeader());
-        String url = backendUrl + DELETE_CAT + id;
+        String url = backendUrl + CATS + id;
         restTemplate
                 .exchange(url, DELETE, httpEntity, Void.class);
     }

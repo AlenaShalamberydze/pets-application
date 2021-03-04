@@ -1,6 +1,5 @@
 package com.leverx.pets.dto.request;
 
-import com.leverx.pets.dto.response.ResponseEntity;
 import com.leverx.pets.model.user.Role;
 import lombok.Data;
 
