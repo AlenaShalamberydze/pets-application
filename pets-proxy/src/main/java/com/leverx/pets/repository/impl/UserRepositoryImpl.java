@@ -1,5 +1,7 @@
 package com.leverx.pets.repository.impl;
 
+import com.leverx.pets.dto.request.UserRequest;
+import com.leverx.pets.dto.response.UserResponse;
 import com.leverx.pets.model.user.User;
 import com.leverx.pets.provider.AuthProvider;
 import com.leverx.pets.repository.UserRepository;
@@ -42,12 +44,12 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public User save(User user) {
+    public UserResponse save(UserRequest user) {
         RestTemplate restTemplate = new RestTemplate();
-        HttpEntity<User> httpEntity = getHttpEntity(user, authProvider.getAuthHeader());
+        HttpEntity<UserRequest> httpEntity = getHttpEntity(user, authProvider.getAuthHeader());
         String url = backendUrl + USERS;
-        ResponseEntity<User> userResponse = restTemplate
-                .exchange(url, POST, httpEntity, User.class);
+        ResponseEntity<UserResponse> userResponse = restTemplate
+                .exchange(url, POST, httpEntity, UserResponse.class);
         return userResponse.getBody();
     }
 

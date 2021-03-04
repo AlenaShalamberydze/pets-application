@@ -5,10 +5,11 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
-public class CatResponse implements ResponseEntity{
+@AllArgsConstructor
+public class CatResponse implements ResponseEntity {
 
+    private final String type = "cat";
     private long id;
     private String name;
     private int age;

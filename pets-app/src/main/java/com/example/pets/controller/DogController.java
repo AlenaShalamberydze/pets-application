@@ -2,7 +2,6 @@ package com.example.pets.controller;
 
 import com.example.pets.dto.request.RequestDog;
 import com.example.pets.dto.response.ResponseDog;
-import com.example.pets.model.dog.Dog;
 import com.example.pets.service.DogService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -17,7 +16,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
-import static com.example.pets.dto.DtoMapper.fromDogDto;
 import static com.example.pets.dto.DtoMapper.toDogDto;
 
 @RestController
@@ -47,7 +45,7 @@ public class DogController {
 
     @PutMapping(value = "/{id}")
     public ResponseEntity<String> update(@PathVariable long id,
-                                             @RequestBody RequestDog requestDog) {
+                                         @RequestBody RequestDog requestDog) {
         dogService.update(requestDog, id);
         return ResponseEntity
                 .ok()

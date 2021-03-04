@@ -2,7 +2,7 @@ package com.leverx.pets.transaction;
 
 import com.leverx.pets.dto.request.CatRequest;
 import com.leverx.pets.dto.request.DogRequest;
-import com.leverx.pets.model.user.User;
+import com.leverx.pets.dto.request.UserRequest;
 import com.leverx.pets.service.CatService;
 import com.leverx.pets.service.DogService;
 import com.leverx.pets.service.UserService;
@@ -16,7 +16,7 @@ import static lombok.AccessLevel.PRIVATE;
 @NoArgsConstructor(access = PRIVATE)
 public final class TransactionalBuilder {
 
-    public static UserTransactional buildUserTransactional(User user, UserService service) {
+    public static UserTransactional buildUserTransactional(UserRequest user, UserService service) {
         return UserTransactional
                 .builder()
                 .userService(service)
@@ -28,7 +28,7 @@ public final class TransactionalBuilder {
         return CatTransactional
                 .builder()
                 .catService(service)
-                .cat(cat)
+                .catRequest(cat)
                 .build();
     }
 
@@ -36,7 +36,7 @@ public final class TransactionalBuilder {
         return DogTransactional
                 .builder()
                 .dogService(service)
-                .dog(dog)
+                .dogRequest(dog)
                 .build();
     }
 

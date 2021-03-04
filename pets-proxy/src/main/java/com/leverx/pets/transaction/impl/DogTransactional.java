@@ -7,27 +7,34 @@ import com.leverx.pets.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
-import lombok.RequiredArgsConstructor;
+
+import static com.leverx.pets.transaction.ConstantValues.DOG_ID;
+import static com.leverx.pets.transaction.ConstantValues.USER_ID;
+import static org.springframework.web.context.request.RequestAttributes.SCOPE_REQUEST;
+import static org.springframework.web.context.request.RequestContextHolder.currentRequestAttributes;
 
 @Data
 @AllArgsConstructor
-@RequiredArgsConstructor
 @Builder
 public class DogTransactional implements Transactional {
 
-    private final DogRequest dog;
+    private final DogRequest dogRequest;
     private final DogService dogService;
-    private DogResponse dogResponse;
 
     @Override
-    public DogResponse save() {
-        dogResponse = dogService.save(dog);
+    public DogResponse executeSave() {
+        long userId = (long) currentRequestAttributes().getAttribute(USER_ID, SCOPE_REQUEST);
+        dogRequest.setUserId(userId);
+        DogResponse dogResponse = dogService.save(dogRequest);
+        currentRequestAttributes()
+                .setAttribute(DOG_ID, dogResponse.getId(), SCOPE_REQUEST);
         return dogResponse;
     }
 
     @Override
-    public void delete() {
-        dogService.deleteById(dogResponse.getId());
+    public void rollback() {
+        long id = (long) currentRequestAttributes().getAttribute(DOG_ID, SCOPE_REQUEST);
+        dogService.deleteById(id);
     }
 
 }

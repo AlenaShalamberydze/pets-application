@@ -4,8 +4,8 @@ import com.leverx.pets.dto.response.ResponseEntity;
 
 public interface Transactional {
 
-    ResponseEntity save();
+    ResponseEntity executeSave();
 
-    void delete();
+    void rollback();
 
 }

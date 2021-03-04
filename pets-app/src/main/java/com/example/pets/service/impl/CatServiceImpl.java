@@ -1,9 +1,8 @@
 package com.example.pets.service.impl;
 
-import com.example.pets.dto.request.RequestCat;
-import com.example.pets.dto.request.RequestDog;
-import com.example.pets.dto.response.ResponseCat;
 import com.example.pets.dto.DtoMapper;
+import com.example.pets.dto.request.RequestCat;
+import com.example.pets.dto.response.ResponseCat;
 import com.example.pets.exception.NotFoundException;
 import com.example.pets.model.cat.Cat;
 import com.example.pets.repository.CatRepository;

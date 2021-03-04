@@ -6,10 +6,11 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
-public class DogResponse implements ResponseEntity{
+@AllArgsConstructor
+public class DogResponse implements ResponseEntity {
 
+    private final String type = "dog";
     private long id;
     private String name;
     private int age;

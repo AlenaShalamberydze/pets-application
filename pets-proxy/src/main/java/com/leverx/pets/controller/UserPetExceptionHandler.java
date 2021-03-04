@@ -20,7 +20,7 @@ public class UserPetExceptionHandler {
     ResponseEntity<String> serverExceptionHandler(HttpServerErrorException e){
         return ResponseEntity
                 .status(e.getStatusCode())
-                .body("Smth went wrong... try again later");
+                .body(e.getMessage());
     }
 
 }

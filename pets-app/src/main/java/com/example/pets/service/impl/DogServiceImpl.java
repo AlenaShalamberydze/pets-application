@@ -85,4 +85,5 @@ public class DogServiceImpl implements DogService {
         log.info("Deleting dog from DB by id: {}", id);
         dogRepository.deleteById(id);
     }
+
 }

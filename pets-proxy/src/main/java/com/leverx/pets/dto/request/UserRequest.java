@@ -1,13 +1,12 @@
-package com.leverx.pets.model.user;
+package com.leverx.pets.dto.request;
 
 import com.leverx.pets.dto.response.ResponseEntity;
+import com.leverx.pets.model.user.Role;
 import lombok.Data;
 
 @Data
-public class User implements ResponseEntity {
+public class UserRequest {
 
-    private final String type = "user";
-    private long id;
     private String username;
     private String password;
     private Role role;

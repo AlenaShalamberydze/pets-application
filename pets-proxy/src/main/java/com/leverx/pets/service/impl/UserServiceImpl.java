@@ -1,5 +1,7 @@
 package com.leverx.pets.service.impl;
 
+import com.leverx.pets.dto.request.UserRequest;
+import com.leverx.pets.dto.response.UserResponse;
 import com.leverx.pets.model.user.User;
 import com.leverx.pets.repository.UserRepository;
 import com.leverx.pets.service.UserService;
@@ -15,7 +17,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public User save(User user) {
+    public UserResponse save(UserRequest user) {
         return userRepository.save(user);
     }
 

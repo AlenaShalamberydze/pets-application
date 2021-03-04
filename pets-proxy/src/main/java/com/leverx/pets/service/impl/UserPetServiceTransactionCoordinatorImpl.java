@@ -15,14 +15,13 @@ import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.HttpServerErrorException;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
-import java.util.stream.IntStream;
 
 import static com.leverx.pets.transaction.TransactionalBuilder.buildCatTransactional;
 import static com.leverx.pets.transaction.TransactionalBuilder.buildDogTransactional;
 import static com.leverx.pets.transaction.TransactionalBuilder.buildUserTransactional;
 import static java.util.Arrays.asList;
-import static org.springframework.http.HttpStatus.BAD_REQUEST;
 
 @Service
 @RequiredArgsConstructor
@@ -38,17 +37,17 @@ public class UserPetServiceTransactionCoordinatorImpl implements UserPetServiceT
         log.info("Transactional Coordinator: saving user+cat+dog into pets-app server DB");
 
         List<Transactional> transactions = formTransactionalList(userCatDog);
+        List<Transactional> executedTransactions = new LinkedList<>();
         List<ResponseEntity> entities = new ArrayList<>();
 
         transactions.forEach(transaction -> {
             try {
-                entities.add(transaction.save());
+                entities.add(transaction.executeSave());
+                executedTransactions.add(transaction);
             } catch (HttpClientErrorException | HttpServerErrorException ex) {
-                log.error("Troubles saving entities into DB: rollback is started");
-                IntStream.range(0, transactions.indexOf(transaction))
-                        .mapToObj(transactions::get)
-                        .forEach(Transactional::delete);
-                throw new HttpClientErrorException(BAD_REQUEST,
+                log.error("Troubles saving entities into DB: rollback has started");
+                executedTransactions.forEach(Transactional::rollback);
+                throw new HttpClientErrorException(ex.getStatusCode(),
                         "failed to save entities into DB");
             }
         });

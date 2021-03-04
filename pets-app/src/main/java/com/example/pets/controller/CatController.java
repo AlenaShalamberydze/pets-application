@@ -1,7 +1,6 @@
 package com.example.pets.controller;
 
 import com.example.pets.dto.request.RequestCat;
-import com.example.pets.dto.request.RequestDog;
 import com.example.pets.dto.response.ResponseCat;
 import com.example.pets.service.CatService;
 import lombok.RequiredArgsConstructor;

@@ -1,10 +1,11 @@
 package com.leverx.pets.service;
 
-import com.leverx.pets.model.user.User;
+import com.leverx.pets.dto.request.UserRequest;
+import com.leverx.pets.dto.response.UserResponse;
 
 public interface UserService {
 
-    User save(User user);
+    UserResponse save(UserRequest user);
 
     void deleteById(long id);
 

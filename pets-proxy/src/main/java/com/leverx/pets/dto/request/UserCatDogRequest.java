@@ -7,10 +7,9 @@ import lombok.NoArgsConstructor;
 
 @Data
 @AllArgsConstructor
-@NoArgsConstructor
 public class UserCatDogRequest {
 
-    private User user;
+    private UserRequest user;
     private CatRequest cat;
     private DogRequest dog;
 
