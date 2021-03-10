@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.context.annotation.RequestScope;
 
 @RestController
 @RequestMapping(value = "/proxy")
@@ -26,21 +25,17 @@ public class UserPetController {
     private final AuthProvider authProvider;
 
     @GetMapping
-    @RequestScope
     public ResponseEntity<AllEntitiesResponse> getAll(
             @RequestHeader(value = "Authorization", defaultValue = "") String authHeader) {
-
         authProvider.setAuthHeader(authHeader);
         return ResponseEntity
                 .ok(userPetService.getAll());
     }
 
     @PostMapping
-    @RequestScope
     public ResponseEntity<UserCatDogResponse> saveUserCatDog(
             @RequestHeader(value = "Authorization", defaultValue = "") String authHeader,
             @RequestBody UserCatDogRequest entities) {
-
         authProvider.setAuthHeader(authHeader);
         return ResponseEntity
                 .ok(serviceTransactionCoordinator.saveUserCatDog(entities));

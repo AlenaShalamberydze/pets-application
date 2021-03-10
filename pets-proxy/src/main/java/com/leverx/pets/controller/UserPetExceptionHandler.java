@@ -5,21 +5,22 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.HttpServerErrorException;
+import org.springframework.web.client.HttpStatusCodeException;
 
 @ControllerAdvice
 public class UserPetExceptionHandler {
 
-    @ExceptionHandler(HttpClientErrorException.class)
-    ResponseEntity<String> clientExceptionHandler(HttpClientErrorException e) {
+    @ExceptionHandler({HttpClientErrorException.class, HttpServerErrorException.class})
+    ResponseEntity<String> clientExceptionHandler(HttpStatusCodeException e) {
         return ResponseEntity
                 .status(e.getStatusCode())
                 .body(e.getMessage());
     }
 
-    @ExceptionHandler(HttpServerErrorException.class)
-    ResponseEntity<String> serverExceptionHandler(HttpServerErrorException e){
+    @ExceptionHandler(RuntimeException.class)
+    ResponseEntity<String> runtimeExceptionHandler(RuntimeException e) {
         return ResponseEntity
-                .status(e.getStatusCode())
+                .status(0)
                 .body(e.getMessage());
     }
 

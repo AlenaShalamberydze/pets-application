@@ -2,7 +2,6 @@ package com.leverx.pets.service.impl;
 
 import com.leverx.pets.dto.request.UserRequest;
 import com.leverx.pets.dto.response.UserResponse;
-import com.leverx.pets.model.user.User;
 import com.leverx.pets.repository.UserRepository;
 import com.leverx.pets.service.UserService;
 import lombok.RequiredArgsConstructor;

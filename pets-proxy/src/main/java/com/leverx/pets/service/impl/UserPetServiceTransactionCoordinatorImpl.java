@@ -32,16 +32,16 @@ public class UserPetServiceTransactionCoordinatorImpl implements UserPetServiceT
 
     @Override
     public UserCatDogResponse saveUserCatDog(UserCatDogRequest userCatDog) {
-        log.info("Transactional Coordinator: saving user+cat+dog into pets-app server DB");
+        log.info("Transactional Coordinator: saving user, cat and dog into pets-app server DB");
 
         List<Transactional> transactions = formTransactionalList(userCatDog);
         List<Transactional> executedTransactions = new LinkedList<>();
         UserCatDogResponse response = new UserCatDogResponse();
 
-        transactions.forEach(transaction -> {
+        transactions.forEach(entitySaveTransaction -> {
             try {
-                transaction.addEntityToResponse(response, transaction.executeSave());
-                executedTransactions.add(transaction);
+                entitySaveTransaction.addEntityToResponse(response, entitySaveTransaction.executeSave());
+                executedTransactions.add(entitySaveTransaction);
             } catch (HttpClientErrorException | HttpServerErrorException ex) {
                 log.error("Troubles saving entities into DB: rollback has started");
                 executedTransactions.forEach(Transactional::rollback);

@@ -20,7 +20,7 @@ public class UserPetServiceImpl implements UserPetService {
 
     @Override
     public AllEntitiesResponse getAll() {
-        log.info("Getting all cats-dogs-users from pets-app service");
+        log.info("Getting all cats, dogs and users from pets-app service");
         return new AllEntitiesResponse(userRepository.getAll(),
                 catRepository.getAll(),
                 dogRepository.getAll());
