@@ -1,7 +1,7 @@
 package com.leverx.pets.repository.implDestination;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.gson.Gson;
+import com.leverx.pets.RepositoryException;
 import com.leverx.pets.dto.request.DogRequest;
 import com.leverx.pets.dto.response.DogResponse;
 import com.leverx.pets.repository.DogRepository;
@@ -33,6 +33,8 @@ public class DogRepositoryDestinationImpl implements DogRepository {
     private static final String DOGS = "/dogs/";
     private static final String HEADER = "application/json";
 
+    private final ObjectMapper objectMapper;
+
     @Value(value = "${backend.server.url}")
     private final String backendUrl;
 
@@ -43,12 +45,12 @@ public class DogRepositoryDestinationImpl implements DogRepository {
         DogResponse[] dogs;
         try {
             HttpEntity httpEntity = client.execute(get).getEntity();
-            dogs = new Gson()
-                    .fromJson(EntityUtils.toString(httpEntity),
+            dogs = objectMapper
+                    .readValue(EntityUtils.toString(httpEntity),
                             DogResponse[].class);
         } catch (IOException e) {
             log.error("Troubles getting dogs from DB");
-            throw new RuntimeException("Troubles getting dogs from DB");
+            throw new RepositoryException("Troubles getting dogs from DB");
         }
 
         return asList(dogs);
@@ -59,18 +61,17 @@ public class DogRepositoryDestinationImpl implements DogRepository {
         HttpClient client = getHttpClientWithDestination();
         HttpPost post = new HttpPost(backendUrl + DOGS);
         DogResponse dogResponse;
-        ObjectMapper objectMapper = new ObjectMapper();
         try {
             post.setEntity(new StringEntity(objectMapper.writeValueAsString(dog)));
             post.setHeader("Accept", HEADER);
             post.setHeader("Content-type", HEADER);
             HttpEntity httpEntity = client.execute(post).getEntity();
-            dogResponse = new Gson()
-                    .fromJson(EntityUtils.toString(httpEntity),
+            dogResponse = objectMapper
+                    .readValue(EntityUtils.toString(httpEntity),
                             DogResponse.class);
         } catch (IOException e) {
             log.error("Troubles saving dog into DB");
-            throw new RuntimeException("Troubles saving dog into DB");
+            throw new RepositoryException("Troubles saving dog into DB");
         }
 
         return dogResponse;
@@ -84,7 +85,7 @@ public class DogRepositoryDestinationImpl implements DogRepository {
             client.execute(delete);
         } catch (IOException e) {
             log.error("Troubles deleting dog from DB");
-            throw new RuntimeException("Troubles deleting dog from DB");
+            throw new RepositoryException("Troubles deleting dog from DB");
         }
     }
 

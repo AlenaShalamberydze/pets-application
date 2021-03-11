@@ -1,7 +1,7 @@
 package com.leverx.pets.repository.implDestination;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.gson.Gson;
+import com.leverx.pets.RepositoryException;
 import com.leverx.pets.dto.request.CatRequest;
 import com.leverx.pets.dto.response.CatResponse;
 import com.leverx.pets.repository.CatRepository;
@@ -33,6 +33,8 @@ public class CatRepositoryDestinationImpl implements CatRepository {
     private static final String CATS = "/cats/";
     private static final String HEADER = "application/json";
 
+    private final ObjectMapper objectMapper;
+
     @Value(value = "${backend.server.url}")
     private final String backendUrl;
 
@@ -43,12 +45,12 @@ public class CatRepositoryDestinationImpl implements CatRepository {
         CatResponse[] cats;
         try {
             HttpEntity httpEntity = client.execute(get).getEntity();
-            cats = new Gson()
-                    .fromJson(EntityUtils.toString(httpEntity),
+            cats = objectMapper
+                    .readValue(EntityUtils.toString(httpEntity),
                             CatResponse[].class);
         } catch (IOException e) {
             log.error("Troubles getting cats from DB");
-            throw new RuntimeException("Troubles getting cats from DB");
+            throw new RepositoryException("Troubles getting cats from DB");
         }
 
         return asList(cats);
@@ -59,18 +61,17 @@ public class CatRepositoryDestinationImpl implements CatRepository {
         HttpClient client = getHttpClientWithDestination();
         HttpPost post = new HttpPost(backendUrl + CATS);
         CatResponse catResponse;
-        ObjectMapper objectMapper = new ObjectMapper();
         try {
             post.setEntity(new StringEntity(objectMapper.writeValueAsString(cat)));
             post.setHeader("Accept", HEADER);
             post.setHeader("Content-type", HEADER);
             HttpEntity httpEntity = client.execute(post).getEntity();
-            catResponse = new Gson()
-                    .fromJson(EntityUtils.toString(httpEntity),
+            catResponse = objectMapper
+                    .readValue(EntityUtils.toString(httpEntity),
                             CatResponse.class);
         } catch (IOException e) {
             log.error("Troubles saving cat into DB");
-            throw new RuntimeException("Troubles saving cat into DB");
+            throw new RepositoryException("Troubles saving cat into DB");
         }
 
         return catResponse;
@@ -84,7 +85,7 @@ public class CatRepositoryDestinationImpl implements CatRepository {
             client.execute(delete);
         } catch (IOException e) {
             log.error("Troubles deleting cat from DB");
-            throw new RuntimeException("Troubles deleting cat from DB");
+            throw new RepositoryException("Troubles deleting cat from DB");
         }
     }
 

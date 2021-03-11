@@ -1,7 +1,7 @@
 package com.leverx.pets.repository.implDestination;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.gson.Gson;
+import com.leverx.pets.RepositoryException;
 import com.leverx.pets.dto.request.UserRequest;
 import com.leverx.pets.dto.response.UserResponse;
 import com.leverx.pets.model.user.User;
@@ -35,6 +35,8 @@ public class UserRepositoryDestinationImpl implements UserRepository {
     private static final String USERS = "/users/";
     private static final String HEADER = "application/json";
 
+    private final ObjectMapper objectMapper;
+
     @Value(value = "${backend.server.url}")
     private final String backendUrl;
 
@@ -45,12 +47,12 @@ public class UserRepositoryDestinationImpl implements UserRepository {
         User[] users;
         try {
             HttpEntity httpEntity = client.execute(get).getEntity();
-            users = new Gson()
-                    .fromJson(EntityUtils.toString(httpEntity),
+            users = objectMapper
+                    .readValue(EntityUtils.toString(httpEntity),
                             User[].class);
         } catch (IOException e) {
             log.error("Troubles getting users from DB");
-            throw new RuntimeException("Troubles getting users from DB");
+            throw new RepositoryException("Troubles getting users from DB");
         }
 
         return asList(users);
@@ -61,18 +63,17 @@ public class UserRepositoryDestinationImpl implements UserRepository {
         HttpClient client = getHttpClientWithDestination();
         HttpPost post = new HttpPost(backendUrl + USERS);
         UserResponse userResponse;
-        ObjectMapper objectMapper = new ObjectMapper();
         try {
             post.setEntity(new StringEntity(objectMapper.writeValueAsString(user)));
             post.setHeader("Accept", HEADER);
             post.setHeader("Content-type", HEADER);
             HttpEntity httpEntity = client.execute(post).getEntity();
-            userResponse = new Gson()
-                    .fromJson(EntityUtils.toString(httpEntity),
+            userResponse = objectMapper
+                    .readValue(EntityUtils.toString(httpEntity),
                             UserResponse.class);
         } catch (IOException e) {
             log.error("Troubles saving user into DB");
-            throw new RuntimeException("Troubles saving user into DB");
+            throw new RepositoryException("Troubles saving user into DB");
         }
 
         return userResponse;
@@ -86,7 +87,7 @@ public class UserRepositoryDestinationImpl implements UserRepository {
             client.execute(delete);
         } catch (IOException e) {
             log.error("Troubles deleting user from DB");
-            throw new RuntimeException("Troubles deleting user from DB");
+            throw new RepositoryException("Troubles deleting user from DB");
         }
     }
 
