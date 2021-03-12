@@ -1,27 +1,24 @@
 package com.leverx.pets.repository.implDestination;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.leverx.pets.RepositoryException;
+import com.leverx.pets.exception.RepositoryException;
+import com.leverx.pets.destinationService.DestinationService;
 import com.leverx.pets.dto.request.CatRequest;
 import com.leverx.pets.dto.response.CatResponse;
 import com.leverx.pets.repository.CatRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.http.HttpEntity;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpDelete;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.util.EntityUtils;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Repository;
 
 import java.io.IOException;
 import java.util.List;
 
-import static com.leverx.pets.repository.util.UserPetRepositoryUtil.getHttpClientWithDestination;
+import static com.leverx.pets.repository.implDestination.RepositoryConstants.CATS;
+import static com.leverx.pets.repository.implDestination.RepositoryConstants.CHARSET;
 import static java.util.Arrays.asList;
 
 @Repository
@@ -30,23 +27,16 @@ import static java.util.Arrays.asList;
 @Primary
 public class CatRepositoryDestinationImpl implements CatRepository {
 
-    private static final String CATS = "/cats/";
-    private static final String HEADER = "application/json";
-
+    private final DestinationService destinationService;
     private final ObjectMapper objectMapper;
-
-    @Value(value = "${backend.server.url}")
-    private final String backendUrl;
 
     @Override
     public List<CatResponse> getAll() {
-        HttpClient client = getHttpClientWithDestination();
-        HttpGet get = new HttpGet(backendUrl + CATS);
         CatResponse[] cats;
         try {
-            HttpEntity httpEntity = client.execute(get).getEntity();
+            HttpEntity httpEntity = destinationService.executeGetAll(CATS);
             cats = objectMapper
-                    .readValue(EntityUtils.toString(httpEntity),
+                    .readValue(EntityUtils.toString(httpEntity, CHARSET),
                             CatResponse[].class);
         } catch (IOException e) {
             log.error("Troubles getting cats from DB");
@@ -58,16 +48,12 @@ public class CatRepositoryDestinationImpl implements CatRepository {
 
     @Override
     public CatResponse save(CatRequest cat) {
-        HttpClient client = getHttpClientWithDestination();
-        HttpPost post = new HttpPost(backendUrl + CATS);
         CatResponse catResponse;
         try {
-            post.setEntity(new StringEntity(objectMapper.writeValueAsString(cat)));
-            post.setHeader("Accept", HEADER);
-            post.setHeader("Content-type", HEADER);
-            HttpEntity httpEntity = client.execute(post).getEntity();
+            StringEntity requestCat = new StringEntity(objectMapper.writeValueAsString(cat));
+            HttpEntity httpEntity = destinationService.executePost(CATS, requestCat);
             catResponse = objectMapper
-                    .readValue(EntityUtils.toString(httpEntity),
+                    .readValue(EntityUtils.toString(httpEntity, CHARSET),
                             CatResponse.class);
         } catch (IOException e) {
             log.error("Troubles saving cat into DB");
@@ -79,10 +65,8 @@ public class CatRepositoryDestinationImpl implements CatRepository {
 
     @Override
     public void deleteById(long id) {
-        HttpClient client = getHttpClientWithDestination();
-        HttpDelete delete = new HttpDelete(backendUrl + CATS + id);
         try {
-            client.execute(delete);
+            destinationService.executeDelete(CATS + id);
         } catch (IOException e) {
             log.error("Troubles deleting cat from DB");
             throw new RepositoryException("Troubles deleting cat from DB");

@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class DogResponse {
+public class DogResponse implements Response {
 
     private long id;
     private String name;

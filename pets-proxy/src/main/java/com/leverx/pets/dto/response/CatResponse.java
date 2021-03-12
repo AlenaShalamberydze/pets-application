@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class CatResponse {
+public class CatResponse implements Response {
 
     private long id;
     private String name;

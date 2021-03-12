@@ -1,6 +1,7 @@
 package com.leverx.pets.service.impl;
 
 import com.leverx.pets.dto.request.UserCatDogRequest;
+import com.leverx.pets.dto.response.Response;
 import com.leverx.pets.dto.response.UserCatDogResponse;
 import com.leverx.pets.service.CatService;
 import com.leverx.pets.service.DogService;

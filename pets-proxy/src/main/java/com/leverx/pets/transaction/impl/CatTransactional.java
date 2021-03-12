@@ -9,15 +9,15 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 
-import static com.leverx.pets.transaction.ConstantValues.CAT_ID;
-import static com.leverx.pets.transaction.ConstantValues.USER_ID;
+import static com.leverx.pets.transaction.impl.TransactionConstants.CAT_ID;
+import static com.leverx.pets.transaction.impl.TransactionConstants.USER_ID;
 import static org.springframework.web.context.request.RequestAttributes.SCOPE_REQUEST;
 import static org.springframework.web.context.request.RequestContextHolder.currentRequestAttributes;
 
 @Data
 @AllArgsConstructor
 @Builder
-public class CatTransactional implements Transactional {
+public class CatTransactional implements Transactional<CatResponse> {
 
     private final CatRequest catRequest;
     private final CatService catService;
@@ -39,8 +39,8 @@ public class CatTransactional implements Transactional {
     }
 
     @Override
-    public <T> void addEntityToResponse(UserCatDogResponse response, T entity) {
-        response.setCat((CatResponse) entity);
+    public void addEntityToResponse(UserCatDogResponse response, CatResponse entity) {
+        response.setCat(entity);
     }
 
 }

@@ -7,4 +7,4 @@ applications:
     path: target/pets-proxy-0.0.1-SNAPSHOT.jar
     buildpack: https://github.com/cloudfoundry/java-buildpack.git#v4.17.1
     services:
-    - destination-proxy-pets
+      - destination-proxy-pets

@@ -8,13 +8,13 @@ import com.leverx.pets.transaction.Transactional;
 import lombok.Builder;
 import lombok.Data;
 
-import static com.leverx.pets.transaction.ConstantValues.USER_ID;
+import static com.leverx.pets.transaction.impl.TransactionConstants.USER_ID;
 import static org.springframework.web.context.request.RequestAttributes.SCOPE_REQUEST;
 import static org.springframework.web.context.request.RequestContextHolder.currentRequestAttributes;
 
 @Data
 @Builder
-public class UserTransactional implements Transactional {
+public class UserTransactional implements Transactional<UserResponse> {
 
     private UserRequest user;
     private final UserService userService;
@@ -34,8 +34,8 @@ public class UserTransactional implements Transactional {
     }
 
     @Override
-    public <T> void addEntityToResponse(UserCatDogResponse response, T entity) {
-        response.setUser((UserResponse) entity);
+    public void addEntityToResponse(UserCatDogResponse response, UserResponse entity) {
+        response.setUser(entity);
     }
 
 }

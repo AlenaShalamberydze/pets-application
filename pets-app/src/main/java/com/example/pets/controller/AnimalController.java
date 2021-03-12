@@ -4,15 +4,12 @@ import com.example.pets.dto.response.ResponseAnimal;
 import com.example.pets.service.AnimalService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 import static com.example.pets.dto.DtoMapper.toDto;
+import static org.springframework.http.HttpStatus.OK;
 
 @RestController
 @RequestMapping(value = "/animals")
@@ -28,11 +25,9 @@ public class AnimalController {
     }
 
     @DeleteMapping(value = "/{id}")
-    public ResponseEntity<String> deleteById(@PathVariable long id) {
+    @ResponseStatus(OK)
+    public void deleteById(@PathVariable long id) {
         animalService.delete(id);
-        return ResponseEntity
-                .ok()
-                .build();
     }
 
     @GetMapping

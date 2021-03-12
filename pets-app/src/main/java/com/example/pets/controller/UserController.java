@@ -1,9 +1,9 @@
 package com.example.pets.controller;
 
+import com.example.pets.dto.DtoMapper;
 import com.example.pets.dto.response.ResponseAnimal;
 import com.example.pets.dto.response.ResponseCat;
 import com.example.pets.dto.response.ResponseDog;
-import com.example.pets.dto.DtoMapper;
 import com.example.pets.model.user.User;
 import com.example.pets.service.AnimalService;
 import com.example.pets.service.CatService;
@@ -11,18 +11,12 @@ import com.example.pets.service.DogService;
 import com.example.pets.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 import static java.util.stream.Collectors.toList;
+import static org.springframework.http.HttpStatus.OK;
 
 @RestController
 @RequestMapping(value = "/users")
@@ -61,11 +55,9 @@ public class UserController {
     }
 
     @DeleteMapping(value = "/{id}")
-    public ResponseEntity<String> deleteById(@PathVariable long id) {
+    @ResponseStatus(OK)
+    public void deleteById(@PathVariable long id) {
         userService.deleteById(id);
-        return ResponseEntity
-                .ok()
-                .build();
     }
 
     @GetMapping(value = "/{id}/cats")

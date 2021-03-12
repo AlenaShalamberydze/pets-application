@@ -9,15 +9,15 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 
-import static com.leverx.pets.transaction.ConstantValues.DOG_ID;
-import static com.leverx.pets.transaction.ConstantValues.USER_ID;
+import static com.leverx.pets.transaction.impl.TransactionConstants.DOG_ID;
+import static com.leverx.pets.transaction.impl.TransactionConstants.USER_ID;
 import static org.springframework.web.context.request.RequestAttributes.SCOPE_REQUEST;
 import static org.springframework.web.context.request.RequestContextHolder.currentRequestAttributes;
 
 @Data
 @AllArgsConstructor
 @Builder
-public class DogTransactional implements Transactional {
+public class DogTransactional implements Transactional<DogResponse> {
 
     private final DogRequest dogRequest;
     private final DogService dogService;
@@ -39,8 +39,8 @@ public class DogTransactional implements Transactional {
     }
 
     @Override
-    public <T> void addEntityToResponse(UserCatDogResponse response, T entity) {
-        response.setDog((DogResponse) entity);
+    public void addEntityToResponse(UserCatDogResponse response, DogResponse entity) {
+        response.setDog(entity);
     }
 
 }
